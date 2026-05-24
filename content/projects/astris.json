@@ -1,0 +1,43 @@
+{
+  "title": "ASTRIS",
+  "client": "Astris",
+  "industry": "Deep Tech · Aerospace",
+  "services": "Logo · Color System · Typography · Brand Guidelines",
+  "year": "2024",
+  "tagline": "convergence is inevitable",
+  "shortDesc": "A complete brand identity system for a deeptech aerospace company — precision-engineered visuals built to communicate authority and the inevitable convergence of technology.",
+  "heroBg": "#0d0a18",
+  "accentColor": "#c1bcf0",
+  "textColor": "#f8f7ff",
+  "coverImage": "",
+  "logoImage": "",
+  "sections": [
+    {
+      "title": "About the Brand",
+      "body": "Astris operates at the frontier of deeptech and aerospace systems integration. The name evokes the stars — and the brand needed to match that gravity. The challenge was building a visual identity that felt as precise and inevitable as the technology itself.\n\nNo noise. No decoration for decoration's sake. Every element in the Astris brand serves the central idea: that convergence is inevitable — of technology, of purpose, of the future arriving whether you're ready or not."
+    },
+    {
+      "title": "Logo & Variations",
+      "body": "The Astris mark is built from nested geometric forms — a square outer frame, a rotated inner diamond, and converging corner lines that create the illusion of dimensional depth. It holds its precision from favicon to billboard.\n\nThe wordmark pairs the mark using a tight, monospace-inspired letterform to reinforce the engineering aesthetic."
+    },
+    {
+      "title": "Color Palette",
+      "body": "Three primary colors form the visual backbone of Astris — chosen to give the brand an innovative feel and deeptech aerospace aesthetic. Haiti (deep navy), Electric Violet (lavender), and Blue Chalk (off-white) occupy a major section of every visual representation."
+    },
+    {
+      "title": "Typography",
+      "body": "Morfa is the primary font — chosen for its sleek, modern monospace character. Used for headings and the brand wordmark. Space Grotesk serves as the secondary typeface for body texts and numeral representations."
+    }
+  ],
+  "images": [],
+  "palette": [
+    { "name": "Haiti", "hex": "#18102B", "role": "Primary" },
+    { "name": "Electric Violet", "hex": "#C1BCF0", "role": "Primary" },
+    { "name": "Blue Chalk", "hex": "#F8F7FF", "role": "Primary" },
+    { "name": "Yellow", "hex": "#F0E100", "role": "Secondary" },
+    { "name": "Violet", "hex": "#834DFC", "role": "Secondary" },
+    { "name": "Cyan Blue", "hex": "#0099FF", "role": "Secondary" }
+  ],
+  "order": 1,
+  "published": true
+}

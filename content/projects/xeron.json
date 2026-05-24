@@ -23,10 +23,15 @@
   ],
   "tagline": "Care, Love & Equality with Xeron!",
   "order": 2,
-  "logoImage": "",
+  "logoImage": "/images/uploads/xeron-3.jpg",
   "textColor": "#ffffff",
   "title": "Xeron",
-  "images": [],
+  "images": [
+    {
+      "image": "/images/uploads/xeron-2.jpg",
+      "caption": "Brand Overview"
+    }
+  ],
   "accentColor": "#FFD426",
   "palette": [
     {

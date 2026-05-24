@@ -1,0 +1,42 @@
+{
+  "title": "Xeron",
+  "client": "Xeron",
+  "industry": "NGO · Social Care",
+  "services": "Logo · Colors · Mockups · Brand Guidelines",
+  "year": "2024",
+  "tagline": "Care, Love & Equality with Xeron!",
+  "shortDesc": "A complete brand identity system for a social care organisation dedicated to homeless and vulnerable children — built on warmth, trust, and the belief that every child deserves equal love.",
+  "heroBg": "#065DCE",
+  "accentColor": "#FFD426",
+  "textColor": "#ffffff",
+  "coverImage": "",
+  "logoImage": "",
+  "sections": [
+    {
+      "title": "Brand Mission",
+      "body": "At Xeron our mission is to nurture a future where no child is left behind — a world where love, care, and equality are not privileges but rights. We are dedicated to providing holistic social care to homeless and vulnerable children, ensuring they have access to shelter, emotional support, education, and a sense of belonging.\n\nThrough every program we seek to restore hope, build resilience, and unlock the potential within every child we serve."
+    },
+    {
+      "title": "Logo & Breakdown",
+      "body": "The Xeron mark is built from a square format to emphasise unity and togetherness as a family. A cross sign signifies care and love for children and wards, implying safety and trust.\n\nThe X represents Xeron, with four equal circles symbolising equal care and love among every child. X + Cross + People = Xeron."
+    },
+    {
+      "title": "Color Palette",
+      "body": "The Xeron palette is energetic, warm, and accessible — bold blue as the primary trust signal, bright yellow for warmth and optimism, with supporting tones that keep the system versatile across digital and print applications."
+    },
+    {
+      "title": "Typography",
+      "body": "Nutmeg Font is the primary typeface — rounded and warm, chosen for its approachable character that speaks directly to Xeron's human-centered mission. Clash Grotesk Family Font serves as the secondary typeface for body copy and supporting text."
+    }
+  ],
+  "images": [],
+  "palette": [
+    { "name": "Xeron Blue", "hex": "#065DCE", "role": "Primary" },
+    { "name": "Sky Blue", "hex": "#0099FF", "role": "Primary" },
+    { "name": "Gold", "hex": "#E6B800", "role": "Primary" },
+    { "name": "Yellow", "hex": "#FFD426", "role": "Primary" },
+    { "name": "White", "hex": "#FFFFFF", "role": "Neutral" }
+  ],
+  "order": 2,
+  "published": true
+}

@@ -37,6 +37,8 @@ collections:
     label: "Projects"
     folder: "content/projects"
     create: true
+    format: json
+    extension: json
     slug: "{{slug}}"
     fields:
       - { label: "Project Title", name: "title", widget: "string" }

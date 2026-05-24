@@ -1,0 +1,75 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+publish_mode: editorial_workflow
+
+collections:
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - name: "general"
+        label: "General Settings"
+        file: "content/settings.json"
+        fields:
+          - { label: "Studio Name", name: "studioName", widget: "string", default: "Fredz Studio" }
+          - { label: "Tagline", name: "tagline", widget: "string", default: "Building brands with purpose, fixing the ones that lost it." }
+          - { label: "Your Name", name: "designerName", widget: "string", default: "Ani Fredrick" }
+          - { label: "Email", name: "email", widget: "string", default: "anifredrick6@gmail.com" }
+          - { label: "Phone", name: "phone", widget: "string", default: "+234 906 749 6647" }
+          - { label: "Instagram Handle", name: "instagram", widget: "string", default: "@fredzstudio" }
+          - { label: "Years of Experience", name: "yearsExp", widget: "string", default: "2+" }
+          - { label: "Projects Delivered", name: "projectCount", widget: "string", default: "50+" }
+          - { label: "Logo", name: "logo", widget: "image", required: false }
+          - label: "About Section"
+            name: "about"
+            widget: "object"
+            fields:
+              - { label: "Heading", name: "heading", widget: "string", default: "The mind behind the marks." }
+              - { label: "Paragraph 1", name: "p1", widget: "text", default: "I'm Ani Fredrick — a Nigerian brand and social media ads designer with 2+ years of experience turning vague ideas into bold, purposeful visual identities." }
+              - { label: "Paragraph 2", name: "p2", widget: "text", default: "My work lives at the intersection of brand strategy and visual execution — from crafting logos that hold their own at any size, to designing social ads that stop thumbs mid-scroll." }
+              - { label: "Paragraph 3", name: "p3", widget: "text", default: "Every brand has an essence. I build it from scratch, or find it when it's been lost." }
+
+  - name: "projects"
+    label: "Projects"
+    folder: "content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Project Title", name: "title", widget: "string" }
+      - { label: "Client Name", name: "client", widget: "string" }
+      - { label: "Industry / Type", name: "industry", widget: "string" }
+      - { label: "Services", name: "services", widget: "string" }
+      - { label: "Year", name: "year", widget: "string", default: "2025" }
+      - { label: "Tagline / Slogan", name: "tagline", widget: "string", required: false }
+      - { label: "Short Description (for card)", name: "shortDesc", widget: "text" }
+      - { label: "Hero Background Color", name: "heroBg", widget: "string", default: "#0a0a0a", hint: "Hex color e.g. #065DCE" }
+      - { label: "Accent Color", name: "accentColor", widget: "string", default: "#e8c97e", hint: "Hex color for headings and highlights" }
+      - { label: "Text Color", name: "textColor", widget: "string", default: "#ffffff" }
+      - { label: "Cover / Hero Image", name: "coverImage", widget: "image", required: false }
+      - { label: "Logo Image", name: "logoImage", widget: "image", required: false }
+      - label: "Case Study Sections"
+        name: "sections"
+        widget: "list"
+        fields:
+          - { label: "Section Title", name: "title", widget: "string" }
+          - { label: "Content", name: "body", widget: "text" }
+      - label: "Project Images (Mockups)"
+        name: "images"
+        widget: "list"
+        fields:
+          - { label: "Image", name: "image", widget: "image" }
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+      - label: "Color Palette"
+        name: "palette"
+        widget: "list"
+        max: 6
+        fields:
+          - { label: "Color Name", name: "name", widget: "string" }
+          - { label: "Hex Code", name: "hex", widget: "string" }
+          - { label: "Role (Primary / Accent / Neutral)", name: "role", widget: "string" }
+      - { label: "Order (1, 2, 3...)", name: "order", widget: "number", default: 1 }
+      - { label: "Published", name: "published", widget: "boolean", default: true }

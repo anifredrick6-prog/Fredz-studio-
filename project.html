@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project — Fredz Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0a; --surface: #141414; --border: rgba(255,255,255,0.08);
+      --text: #f0ece4; --muted: #888; --faint: #444;
+      --accent: #e8c97e;
+      --font: 'Sora', sans-serif; --body: 'DM Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body); cursor: none; overflow-x: hidden; }
+
+    .cursor { position: fixed; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); mix-blend-mode: difference; transition: width .3s, height .3s; }
+    .cursor-ring { position: fixed; width: 38px; height: 38px; border: 1.5px solid rgba(232,201,126,0.5); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all .18s ease; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 60px;
+      background: rgba(10,10,10,0.88); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: var(--font); font-weight: 700; font-size: 1rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+    .nav-logo-mark { width: 30px; height: 30px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800; color: #0a0a0a; overflow: hidden; }
+    .nav-logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+    .nav-back { font-family: var(--font); font-size: 0.78rem; color: var(--muted); text-decoration: none; transition: color .3s; letter-spacing: 0.04em; display: flex; align-items: center; gap: 6px; }
+    .nav-back:hover { color: var(--text); }
+
+    /* HERO */
+    .proj-hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 160px 60px 80px;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-cover {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      transition: transform 8s ease;
+    }
+    .proj-hero:hover .hero-cover { transform: scale(1.04); }
+
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 100%);
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+
+    /* Floating logo mark in hero */
+    .hero-logo-mark {
+      position: absolute; top: 50%; right: 80px;
+      transform: translateY(-55%);
+      max-width: 260px; max-height: 260px;
+      opacity: 0.15;
+      animation: floatMark 7s ease-in-out infinite;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+    @keyframes floatMark { 0%,100%{transform:translateY(-55%)} 50%{transform:translateY(-60%)} }
+
+    .proj-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; position: relative; animation: fadeUp .8s .2s both; }
+    .proj-eyebrow span { font-family: var(--font); font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500; }
+    .eyebrow-line { width: 40px; height: 1px; }
+
+    .proj-title { font-family: var(--font); font-size: clamp(3.5rem, 8vw, 7.5rem); font-weight: 800; letter-spacing: -0.05em; line-height: 0.95; margin-bottom: 20px; position: relative; animation: fadeUp .8s .3s both; }
+    .proj-tagline { font-size: 1rem; font-style: italic; letter-spacing: 0.06em; margin-bottom: 14px; position: relative; animation: fadeUp .8s .4s both; font-family: var(--font); }
+    .proj-subtitle { font-size: 0.98rem; color: rgba(240,236,228,0.65); max-width: 520px; line-height: 1.8; position: relative; animation: fadeUp .8s .5s both; }
+
+    .proj-meta {
+      display: flex; gap: 44px; margin-top: 48px; padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      position: relative; animation: fadeUp .8s .65s both; flex-wrap: wrap;
+    }
+    .meta-item label { font-family: var(--font); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.3); display: block; margin-bottom: 6px; }
+    .meta-item span { font-size: 0.86rem; color: var(--text); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+    /* CONTENT */
+    .proj-content { max-width: 960px; margin: 0 auto; padding: 100px 60px; }
+    .content-section { margin-bottom: 80px; }
+    .content-section h2 { font-family: var(--font); font-size: 1.9rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 20px; }
+    .content-section p { color: rgba(240,236,228,0.65); line-height: 1.85; font-size: 0.97rem; }
+    .content-section p+p { margin-top: 14px; }
+    .divider { height: 1px; background: var(--border); margin: 70px 0; }
+
+    /* IMAGE GALLERY */
+    .image-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin-top: 32px; }
+    .gallery-item { position: relative; overflow: hidden; border-radius: 0; }
+    .gallery-item:first-child { grid-column: span 2; aspect-ratio: 16/7; }
+    .gallery-item:not(:first-child) { aspect-ratio: 4/3; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; display: block; }
+    .gallery-item:hover img { transform: scale(1.04); }
+    .gallery-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); font-size: 0.72rem; color: rgba(255,255,255,0.7); font-family: var(--font); letter-spacing: 0.06em; opacity: 0; transition: opacity .3s; }
+    .gallery-item:hover .gallery-caption { opacity: 1; }
+
+    /* Single image full width */
+    .single-image { margin-top: 32px; border-radius: 12px; overflow: hidden; }
+    .single-image img { width: 100%; display: block; object-fit: cover; max-height: 520px; }
+
+    /* COLOR PALETTE */
+    .palette-grid { display: flex; gap: 3px; margin-top: 32px; border-radius: 14px; overflow: hidden; }
+    .swatch { flex: 1; }
+    .swatch-color { height: 100px; }
+    .swatch-info { padding: 12px 14px; background: var(--surface); border: 1px solid var(--border); border-top: none; }
+    .swatch-role { font-family: var(--font); font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--faint); margin-bottom: 4px; }
+    .swatch-name { font-family: var(--font); font-size: 0.82rem; font-weight: 600; color: var(--text); }
+    .swatch-hex { font-size: 0.68rem; color: var(--muted); margin-top: 2px; font-family: monospace; }
+
+    /* SECTIONS CONTENT */
+    .case-section { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 40px; margin-top: 24px; }
+    .case-section+.case-section { margin-top: 16px; }
+    .case-section h3 { font-family: var(--font); font-size: 1.1rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .case-section p { color: rgba(240,236,228,0.65); line-height: 1.8; font-size: 0.92rem; }
+
+    /* NEXT / PREV PROJECT NAV */
+    .project-nav { display: flex; gap: 3px; margin: 0 60px 80px; }
+    .proj-nav-btn { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 36px 40px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; text-decoration: none; transition: all .4s; }
+    .proj-nav-btn:hover { border-color: var(--accent); background: #1c1c1c; transform: translateY(-2px); }
+    .proj-nav-label { font-family: var(--font); font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .proj-nav-name { font-family: var(--font); font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; color: var(--text); }
+    .proj-nav-arrow { font-size: 1.5rem; transition: transform .3s; }
+    .proj-nav-btn:hover .proj-nav-arrow { transform: translateX(6px); }
+    .proj-nav-btn.prev:hover .proj-nav-arrow { transform: translateX(-6px); }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    footer { text-align: center; padding: 40px 60px; border-top: 1px solid var(--border); }
+    footer p { font-size: 0.7rem; color: var(--faint); }
+
+    @media(max-width:768px) {
+      nav { padding: 20px 24px; }
+      .proj-hero { padding: 140px 24px 60px; }
+      .hero-logo-mark { display: none; }
+      .proj-content { padding: 60px 24px; }
+      .proj-meta { flex-wrap: wrap; gap: 20px; }
+      .image-gallery { grid-template-columns: 1fr; }
+      .gallery-item:first-child { grid-column: span 1; }
+      .palette-grid { flex-wrap: wrap; }
+      .project-nav { flex-direction: column; margin: 0 24px 60px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <nav>
+    <a href="index.html" class="nav-logo" id="nav-logo">
+      <div class="nav-logo-mark" id="nav-logo-mark">FS</div>
+      <span id="nav-studio-name">Fredz Studio</span>
+    </a>
+    <a href="index.html#work" class="nav-back">← Back to Work</a>
+  </nav>
+
+  <!-- Hero rendered by JS -->
+  <div id="proj-hero-container"></div>
+
+  <!-- Content rendered by JS -->
+  <div class="proj-content" id="proj-content"></div>
+
+  <!-- Project navigation -->
+  <div class="project-nav" id="project-nav"></div>
+
+  <footer><p id="footer-text">© 2025 Fredz Studio · anifredrick6@gmail.com</p></footer>
+
+  <script>
+    // ─── Cursor ───
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+    function animRing() { rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); }
+    animRing();
+
+    // ─── Reveal ───
+    const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 });
+    function observeReveals() { document.querySelectorAll('.reveal').forEach(el => obs.observe(el)); }
+
+    // ─── Get slug from URL ───
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('slug') || 'astris';
+
+    const allSlugs = ['astris', 'xeron', 'wizpay'];
+
+    // ─── Load site settings ───
+    async function loadSettings() {
+      try {
+        const res = await fetch('/content/settings.json');
+        if(!res.ok) return;
+        const s = await res.json();
+        if(s.studioName) {
+          document.getElementById('nav-studio-name').textContent = s.studioName;
+          document.getElementById('footer-text').textContent = `© 2025 ${s.studioName} · ${s.email || 'anifredrick6@gmail.com'}`;
+        }
+        if(s.logo) {
+          document.getElementById('nav-logo-mark').innerHTML = `<img src="${s.logo}" alt="logo">`;
+        }
+      } catch(e) {}
+    }
+
+    // ─── Load and render project ───
+    async function loadProject() {
+      try {
+        const res = await fetch(`/content/projects/${slug}.json`);
+        if(!res.ok) throw new Error('Not found');
+        const p = await res.json();
+
+        // Update page title
+        document.title = `${p.title} — Fredz Studio`;
+
+        // Set CSS accent color
+        const accent = p.accentColor || '#e8c97e';
+        const heroBg = p.heroBg || '#0a0a0a';
+        const textColor = p.textColor || '#ffffff';
+
+        document.documentElement.style.setProperty('--accent', accent);
+        cursor.style.background = accent;
+        ring.style.borderColor = accent + '80';
+
+        // ─── Render hero ───
+        const heroEl = document.getElementById('proj-hero-container');
+        const slugIdx = allSlugs.indexOf(slug);
+
+        heroEl.innerHTML = `
+          <div class="proj-hero" style="background:${heroBg}">
+            ${p.coverImage
+              ? `<div class="hero-cover" style="background-image:url('${p.coverImage}')"></div><div class="hero-overlay"></div>`
+              : `<div class="hero-grid"></div>`
+            }
+            ${p.logoImage
+              ? `<div class="hero-logo-mark"><img src="${p.logoImage}" alt="${p.title} logo"></div>`
+              : ''
+            }
+            <div class="proj-eyebrow" style="position:relative">
+              <div class="eyebrow-line" style="background:${accent}"></div>
+              <span style="color:${accent}">Brand Identity — 0${slugIdx + 1}</span>
+            </div>
+            <h1 class="proj-title" style="color:${textColor}">${p.title}</h1>
+            ${p.tagline ? `<p class="proj-tagline" style="color:${accent}">"${p.tagline}"</p>` : ''}
+            <p class="proj-subtitle">${p.shortDesc || ''}</p>
+            <div class="proj-meta">
+              <div class="meta-item"><label>Client</label><span>${p.client || p.title}</span></div>
+              <div class="meta-item"><label>Industry</label><span>${p.industry || ''}</span></div>
+              <div class="meta-item"><label>Services</label><span>${p.services || ''}</span></div>
+              <div class="meta-item"><label>Year</label><span>${p.year || '2025'}</span></div>
+            </div>
+          </div>`;
+
+        // ─── Render content ───
+        const contentEl = document.getElementById('proj-content');
+        let html = '';
+
+        // Case study sections
+        if(p.sections && p.sections.length > 0) {
+          html += `<div class="content-section reveal"><h2>Case Study</h2>`;
+          p.sections.forEach(sec => {
+            const paragraphs = sec.body.split('\n\n').map(para => `<p>${para.trim()}</p>`).join('');
+            html += `
+              <div class="case-section">
+                <h3 style="color:${accent}">${sec.title}</h3>
+                ${paragraphs}
+              </div>`;
+          });
+          html += `</div><div class="divider"></div>`;
+        }
+
+        // Project images gallery
+        if(p.images && p.images.length > 0) {
+          html += `<div class="content-section reveal"><h2>Project Images</h2>`;
+          if(p.images.length === 1) {
+            html += `<div class="single-image"><img src="${p.images[0].image}" alt="${p.images[0].caption || p.title}"></div>`;
+          } else {
+            html += `<div class="image-gallery">`;
+            p.images.forEach((img, i) => {
+              html += `
+                <div class="gallery-item">
+                  <img src="${img.image}" alt="${img.caption || p.title + ' mockup ' + (i+1)}">
+                  ${img.caption ? `<div class="gallery-caption">${img.caption}</div>` : ''}
+                </div>`;
+            });
+            html += `</div>`;
+          }
+          html += `</div><div class="divider"></div>`;
+        }
+
+        // Color palette
+        if(p.palette && p.palette.length > 0) {
+          html += `
+            <div class="content-section reveal">
+              <h2>Color Palette</h2>
+              <div class="palette-grid">
+                ${p.palette.map(sw => `
+                  <div class="swatch">
+                    <div class="swatch-color" style="background:${sw.hex}; ${sw.hex === '#FFFFFF' || sw.hex === '#F8F7FF' || sw.hex === '#f8f7ff' ? 'border:1px solid rgba(255,255,255,0.1)' : ''}"></div>
+                    <div class="swatch-info">
+                      <div class="swatch-role">${sw.role || ''}</div>
+                      <div class="swatch-name">${sw.name}</div>
+                      <div class="swatch-hex">${sw.hex}</div>
+                    </div>
+                  </div>`).join('')}
+              </div>
+            </div>`;
+        }
+
+        contentEl.innerHTML = html;
+        observeReveals();
+
+        // ─── Project navigation ───
+        const navEl = document.getElementById('project-nav');
+        const prevSlug = slugIdx > 0 ? allSlugs[slugIdx - 1] : null;
+        const nextSlug = slugIdx < allSlugs.length - 1 ? allSlugs[slugIdx + 1] : null;
+
+        let navHtml = '';
+        if(prevSlug) {
+          const prevRes = await fetch(`/content/projects/${prevSlug}.json`);
+          if(prevRes.ok) {
+            const prev = await prevRes.json();
+            navHtml += `
+              <a href="project.html?slug=${prevSlug}" class="proj-nav-btn prev">
+                <div class="proj-nav-arrow" style="color:${prev.accentColor||'#e8c97e'}">←</div>
+                <div style="text-align:right">
+                  <div class="proj-nav-label">Previous</div>
+                  <div class="proj-nav-name">${prev.title}</div>
+                </div>
+              </a>`;
+          }
+        }
+        if(nextSlug) {
+          const nextRes = await fetch(`/content/projects/${nextSlug}.json`);
+          if(nextRes.ok) {
+            const next = await nextRes.json();
+            navHtml += `
+              <a href="project.html?slug=${nextSlug}" class="proj-nav-btn">
+                <div>
+                  <div class="proj-nav-label">Next</div>
+                  <div class="proj-nav-name">${next.title}</div>
+                </div>
+                <div class="proj-nav-arrow" style="color:${next.accentColor||'#e8c97e'}">→</div>
+              </a>`;
+          }
+        }
+        if(!prevSlug && !nextSlug) {
+          navHtml = `<a href="index.html#work" class="proj-nav-btn" style="justify-content:center"><div><div class="proj-nav-label">Back to</div><div class="proj-nav-name">All Projects</div></div></a>`;
+        }
+        navEl.innerHTML = navHtml;
+
+        // Cursor hover on links
+        document.querySelectorAll('a').forEach(el => {
+          el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px';});
+          el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='38px';ring.style.height='38px';});
+        });
+
+      } catch(err) {
+        document.getElementById('proj-hero-container').innerHTML = `
+          <div style="min-height:60vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:60px">
+            <div style="font-family:var(--font);font-size:3rem;font-weight:800;color:var(--muted)">404</div>
+            <div style="color:var(--muted);font-size:0.9rem">Project not found.</div>
+            <a href="index.html#work" style="margin-top:12px;color:var(--accent);font-family:var(--font);font-size:0.8rem;text-decoration:none;border:1px solid var(--accent);padding:10px 24px;border-radius:100px">← Back to Work</a>
+          </div>`;
+      }
+    }
+
+    loadSettings();
+    loadProject();
+  </script>
+</body>
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fredz Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0a; --bg2: #111; --surface: #1a1a1a;
+      --border: rgba(255,255,255,0.07);
+      --accent: #e8c97e; --accent2: #d4a853;
+      --text: #f0ece4; --muted: #888; --faint: #444;
+      --font: 'Sora', sans-serif; --body: 'DM Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body); overflow-x: hidden; cursor: none; }
+
+    .cursor { position: fixed; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); mix-blend-mode: difference; transition: width .3s, height .3s; }
+    .cursor-ring { position: fixed; width: 38px; height: 38px; border: 1.5px solid rgba(232,201,126,0.5); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all .18s ease; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 60px;
+      background: rgba(10,10,10,0.8); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      animation: fadeDown .8s ease both;
+    }
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+
+    .nav-logo { font-family: var(--font); font-weight: 700; font-size: 1.1rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 10px; letter-spacing: -0.02em; }
+    .nav-logo-img { width: 32px; height: 32px; border-radius: 6px; object-fit: contain; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; color: #0a0a0a; overflow: hidden; }
+    .nav-logo-img img { width: 100%; height: 100%; object-fit: contain; }
+
+    nav ul { list-style: none; display: flex; gap: 40px; }
+    nav ul a { color: var(--muted); text-decoration: none; font-size: 0.82rem; font-family: var(--font); font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; transition: color .3s; position: relative; }
+    nav ul a::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 100%; height: 1px; background: var(--accent); transition: right .3s; }
+    nav ul a:hover { color: var(--text); }
+    nav ul a:hover::after { right: 0; }
+
+    .nav-cta { font-family: var(--font); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #0a0a0a; background: var(--accent); padding: 10px 22px; border-radius: 100px; text-decoration: none; transition: all .3s; }
+    .nav-cta:hover { background: var(--accent2); transform: scale(1.04); }
+
+    /* HERO */
+    #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 140px 60px 80px; position: relative; overflow: hidden; }
+    .hero-bg-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent); }
+    .hero-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(232,201,126,0.07) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+
+    .hero-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; animation: fadeUp .9s .2s ease both; }
+    .hero-eyebrow span { font-family: var(--font); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
+    .eyebrow-line { width: 40px; height: 1px; background: var(--accent); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+    .hero-heading { font-family: var(--font); font-size: clamp(3.2rem, 7vw, 7rem); font-weight: 800; line-height: 1.0; letter-spacing: -0.04em; margin-bottom: 12px; animation: fadeUp .9s .35s ease both; }
+    .hero-heading em { font-style: normal; color: transparent; -webkit-text-stroke: 1.5px var(--accent); }
+    .hero-tagline { font-family: var(--font); font-size: clamp(1rem, 2vw, 1.35rem); font-weight: 300; color: var(--muted); max-width: 520px; line-height: 1.5; margin-bottom: 50px; animation: fadeUp .9s .5s ease both; }
+    .hero-tagline strong { color: var(--text); font-weight: 500; }
+
+    .hero-actions { display: flex; align-items: center; gap: 20px; animation: fadeUp .9s .65s ease both; }
+    .btn-primary { font-family: var(--font); font-weight: 600; font-size: 0.82rem; letter-spacing: 0.05em; text-transform: uppercase; background: var(--accent); color: #0a0a0a; padding: 14px 32px; border-radius: 100px; text-decoration: none; transition: all .3s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(232,201,126,0.25); }
+    .btn-ghost { font-family: var(--font); font-weight: 500; font-size: 0.82rem; letter-spacing: 0.05em; color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: color .3s; }
+    .btn-ghost:hover { color: var(--text); }
+
+    .hero-stats { display: flex; gap: 48px; margin-top: 80px; padding-top: 48px; border-top: 1px solid var(--border); animation: fadeUp .9s .8s ease both; }
+    .stat-num { font-family: var(--font); font-size: 2.2rem; font-weight: 700; color: var(--text); letter-spacing: -0.04em; line-height: 1; }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .scroll-hint { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--faint); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; font-family: var(--font); animation: fadeUp 1s 1.2s ease both; }
+    .scroll-line { width: 1px; height: 40px; background: linear-gradient(var(--faint), transparent); animation: scrollPulse 2s infinite; }
+    @keyframes scrollPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+    /* MARQUEE */
+    .marquee-wrap { overflow: hidden; background: var(--accent); padding: 14px 0; }
+    .marquee-track { display: flex; width: max-content; animation: marquee 18s linear infinite; }
+    .marquee-item { font-family: var(--font); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #0a0a0a; padding: 0 32px; display: flex; align-items: center; gap: 16px; }
+    .marquee-item::after { content: '✦'; font-size: 0.6rem; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* SECTIONS */
+    section { padding: 120px 60px; }
+    .section-eyebrow { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .section-eyebrow span { font-family: var(--font); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+    .eyebrow-dot { width: 4px; height: 4px; background: var(--accent); border-radius: 50%; }
+    .section-title { font-family: var(--font); font-size: clamp(2.2rem, 4vw, 3.8rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; }
+    .section-title em { font-style: normal; color: var(--accent); }
+
+    /* ABOUT */
+    #about { background: var(--bg2); position: relative; overflow: hidden; }
+    #about::before { content: 'FREDZ'; position: absolute; right: -20px; top: 50%; transform: translateY(-50%) rotate(90deg); font-family: var(--font); font-size: 14rem; font-weight: 900; color: rgba(255,255,255,0.015); letter-spacing: -0.06em; pointer-events: none; user-select: none; }
+
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-top: 60px; }
+    .about-body { color: rgba(240,236,228,0.7); font-size: 1.05rem; line-height: 1.8; margin-top: 28px; }
+    .about-body p+p { margin-top: 16px; }
+    .about-body strong { color: var(--text); font-weight: 500; }
+
+    .about-niches { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+    .niche-tag { font-family: var(--font); font-size: 0.73rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 18px; border: 1px solid var(--border); border-radius: 100px; color: var(--muted); transition: all .3s; }
+    .niche-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+    .tools-heading { font-family: var(--font); font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+    .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .tool-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 14px; transition: all .3s; }
+    .tool-card:hover { border-color: rgba(232,201,126,0.25); transform: translateY(-2px); }
+    .tool-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .tool-ps { background: #001E36; color: #31A8FF; }
+    .tool-ai { background: #2D1B00; color: #FF9A00; }
+    .tool-cdr { background: #1A0000; color: #00A550; }
+    .tool-canva { background: #0D1117; color: #7D2AE8; }
+    .tool-name { font-family: var(--font); font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .tool-desc { font-size: 0.73rem; color: var(--muted); margin-top: 2px; }
+
+    .xp-row { margin-top: 8px; }
+    .xp-label { display: flex; justify-content: space-between; font-size: 0.76rem; color: var(--muted); font-family: var(--font); margin-bottom: 8px; }
+    .xp-track { height: 3px; background: var(--border); border-radius: 100px; overflow: hidden; }
+    .xp-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 100px; width: 0; transition: width 1.5s ease; }
+
+    /* WORK */
+    #work { background: var(--bg); }
+    .work-intro { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 64px; }
+    .work-intro-right { color: var(--muted); font-size: 0.88rem; max-width: 300px; text-align: right; line-height: 1.6; }
+
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
+    .project-card { position: relative; aspect-ratio: 3/4; overflow: hidden; cursor: none; display: block; text-decoration: none; }
+    .project-card:hover .project-visual { transform: translate(-50%, -65%) scale(1.06); }
+    .project-visual { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); transition: transform .5s ease; display: flex; align-items: center; justify-content: center; }
+    .project-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 32px; opacity: 0.85; transition: opacity .4s; }
+    .project-card:hover .project-overlay { opacity: 1; }
+    .project-number { font-family: var(--font); font-size: 0.62rem; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+    .project-name { font-family: var(--font); font-size: 1.4rem; font-weight: 700; color: var(--text); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 6px; }
+    .project-type { font-size: 0.78rem; color: rgba(240,236,228,0.55); }
+    .project-arrow { position: absolute; top: 24px; right: 24px; width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text); font-size: 0.78rem; opacity: 0; transform: scale(0.8); transition: opacity .3s, transform .3s; }
+    .project-card:hover .project-arrow { opacity: 1; transform: scale(1); }
+
+    /* SERVICES */
+    #services { background: var(--bg2); }
+    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 64px; }
+    .service-card { background: #161616; border: 1px solid var(--border); padding: 48px 44px; position: relative; overflow: hidden; transition: background .4s; }
+    .service-card:hover { background: #1c1c1c; }
+    .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent2), var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform .4s; }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-num { font-family: var(--font); font-size: 0.68rem; letter-spacing: 0.2em; color: var(--faint); text-transform: uppercase; margin-bottom: 24px; }
+    .service-icon { font-size: 2rem; margin-bottom: 20px; display: block; }
+    .service-name { font-family: var(--font); font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; color: var(--text); margin-bottom: 14px; }
+    .service-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+    .service-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .service-tag { font-family: var(--font); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 12px; border: 1px solid var(--border); border-radius: 4px; color: var(--faint); }
+
+    /* CONTACT */
+    #contact { background: var(--bg); text-align: center; padding: 120px 60px 60px; }
+    .contact-heading { font-family: var(--font); font-size: clamp(2.8rem, 6vw, 6rem); font-weight: 800; letter-spacing: -0.05em; line-height: 1; margin-bottom: 24px; }
+    .contact-heading em { font-style: normal; color: transparent; -webkit-text-stroke: 1.5px var(--accent); }
+    .contact-sub { color: var(--muted); font-size: 1rem; max-width: 420px; margin: 0 auto 48px; line-height: 1.7; }
+    .contact-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 80px; }
+    .contact-link { display: flex; align-items: center; gap: 10px; font-family: var(--font); font-size: 0.8rem; font-weight: 500; color: var(--muted); text-decoration: none; padding: 12px 24px; border: 1px solid var(--border); border-radius: 100px; transition: all .3s; letter-spacing: 0.03em; }
+    .contact-link:hover { color: var(--text); border-color: rgba(232,201,126,0.4); background: rgba(232,201,126,0.05); }
+
+    .footer-divider { height: 1px; background: var(--border); margin-bottom: 40px; }
+    footer { display: flex; justify-content: space-between; align-items: center; padding: 0 0 40px; }
+    .footer-logo { font-family: var(--font); font-weight: 700; font-size: 0.95rem; letter-spacing: -0.02em; color: var(--muted); }
+    .footer-copy { font-size: 0.73rem; color: var(--faint); }
+    .footer-flag { display: flex; align-items: center; gap: 8px; font-size: 0.73rem; color: var(--faint); }
+
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s ease, transform .8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+
+    /* Loading state */
+    .loading-pulse { animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+
+    @media(max-width:900px) {
+      nav { padding: 20px 24px; }
+      nav ul { display: none; }
+      #hero, section { padding-left: 24px; padding-right: 24px; }
+      #hero { padding-top: 120px; padding-bottom: 60px; }
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 16px; text-align: center; }
+      .work-intro { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .work-intro-right { text-align: left; }
+      #contact { padding: 80px 24px 40px; }
+      .hero-stats { gap: 28px; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav id="site-nav">
+    <a href="#hero" class="nav-logo" id="nav-logo">
+      <div class="nav-logo-img" id="nav-logo-img">FS</div>
+      <span id="nav-studio-name">Fredz Studio</span>
+    </a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="mailto:anifredrick6@gmail.com" class="nav-cta" id="nav-cta">Hire Me</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow">
+      <div class="eyebrow-line"></div>
+      <span>Brand & Identity Designer</span>
+      <span>🇳🇬</span>
+    </div>
+    <h1 class="hero-heading">
+      Building brands<br>
+      with <em>purpose,</em><br>
+      fixing the ones<br>that lost it.
+    </h1>
+    <p class="hero-tagline" id="hero-tagline">
+      <strong id="hero-studio-name">Fredz Studio</strong> — 2+ years crafting sharp brand identities
+      and social media ads that convert. Based in Nigeria, designing for the world.
+    </p>
+    <div class="hero-actions">
+      <a href="#work" class="btn-primary">See My Work →</a>
+      <a href="#contact" class="btn-ghost">Let's Talk ↗</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num" id="stat-exp">2<span>+</span></div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div>
+        <div class="stat-num" id="stat-projects">50<span>+</span></div>
+        <div class="stat-label">Projects Delivered</div>
+      </div>
+      <div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">Core Services</div>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <div class="marquee-item">Brand Identity</div>
+      <div class="marquee-item">Logo Design</div>
+      <div class="marquee-item">Social Media Ads</div>
+      <div class="marquee-item">Visual Strategy</div>
+      <div class="marquee-item">Brand Guidelines</div>
+      <div class="marquee-item">Creative Direction</div>
+      <div class="marquee-item">Brand Identity</div>
+      <div class="marquee-item">Logo Design</div>
+      <div class="marquee-item">Social Media Ads</div>
+      <div class="marquee-item">Visual Strategy</div>
+      <div class="marquee-item">Brand Guidelines</div>
+      <div class="marquee-item">Creative Direction</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-eyebrow reveal">
+      <div class="eyebrow-dot"></div>
+      <span>Who I Am</span>
+    </div>
+    <div class="about-grid">
+      <div>
+        <h2 class="section-title reveal">The mind behind<br><em id="about-heading">the marks.</em></h2>
+        <div class="about-body reveal reveal-delay-1" id="about-body">
+          <p id="about-p1">I'm Ani Fredrick — a Nigerian brand and social media ads designer with 2+ years of experience turning vague ideas into bold, purposeful visual identities.</p>
+          <p id="about-p2" style="margin-top:16px">My work lives at the intersection of brand strategy and visual execution — from crafting logos that hold their own at any size, to designing social ads that stop thumbs mid-scroll.</p>
+          <p id="about-p3" style="margin-top:16px">Every brand has an essence. I build it from scratch, or find it when it's been lost.</p>
+        </div>
+        <div class="about-niches reveal reveal-delay-2">
+          <span class="niche-tag">Brand Identity</span>
+          <span class="niche-tag">Logo Design</span>
+          <span class="niche-tag">Social Media Ads</span>
+          <span class="niche-tag">Visual Strategy</span>
+          <span class="niche-tag">Brand Guidelines</span>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="tools-heading">Tools I Work With</div>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <div class="tool-icon tool-ps">Ps</div>
+            <div><div class="tool-name">Photoshop</div><div class="tool-desc">Photo & ad compositing</div></div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon tool-ai">Ai</div>
+            <div><div class="tool-name">Illustrator</div><div class="tool-desc">Vector logos & icons</div></div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon tool-cdr" style="font-size:0.65rem;font-weight:900">CDR</div>
+            <div><div class="tool-name">CorelDRAW</div><div class="tool-desc">Print & identity design</div></div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon tool-canva" style="font-weight:900">C</div>
+            <div><div class="tool-name">Canva</div><div class="tool-desc">Templates & social content</div></div>
+          </div>
+        </div>
+        <div style="margin-top:24px">
+          <div class="xp-row"><div class="xp-label"><span>Brand Identity</span><span>Expert</span></div><div class="xp-track"><div class="xp-fill" data-w="90"></div></div></div>
+          <div class="xp-row" style="margin-top:12px"><div class="xp-label"><span>Social Media Ads</span><span>Expert</span></div><div class="xp-track"><div class="xp-fill" data-w="88"></div></div></div>
+          <div class="xp-row" style="margin-top:12px"><div class="xp-label"><span>Logo Design</span><span>Advanced</span></div><div class="xp-track"><div class="xp-fill" data-w="85"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="work-intro">
+      <div>
+        <div class="section-eyebrow reveal"><div class="eyebrow-dot"></div><span>Selected Work</span></div>
+        <h2 class="section-title reveal">Brand Identity<br><em>Projects</em></h2>
+      </div>
+      <p class="work-intro-right reveal">Real brand identity systems — each solving a distinct brand problem with clarity and craft.</p>
+    </div>
+    <!-- Projects loaded dynamically by JS -->
+    <div class="projects-grid" id="projects-grid">
+      <!-- Loading state -->
+      <div style="grid-column:span 3;text-align:center;padding:60px;color:var(--muted);font-family:var(--font);font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase" class="loading-pulse">Loading projects...</div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-eyebrow reveal"><div class="eyebrow-dot"></div><span>What I Do</span></div>
+    <h2 class="section-title reveal">Services built for<br><em>real impact.</em></h2>
+    <div class="services-grid">
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-num">01</div>
+        <span class="service-icon">◈</span>
+        <div class="service-name">Brand Identity Design</div>
+        <p class="service-desc">From brand discovery to full visual system — logos, color palettes, typography, and brand guidelines that create a lasting, consistent impression across every touchpoint.</p>
+        <div class="service-tags"><span class="service-tag">Logo Design</span><span class="service-tag">Brand Guidelines</span><span class="service-tag">Color Systems</span><span class="service-tag">Stationery</span></div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-num">02</div>
+        <span class="service-icon">⬡</span>
+        <div class="service-name">Social Media Ads</div>
+        <p class="service-desc">High-converting ad creatives designed for Instagram, Facebook, and beyond. Scroll-stopping visuals built around your campaign goals — awareness, engagement, or direct response.</p>
+        <div class="service-tags"><span class="service-tag">Ad Creatives</span><span class="service-tag">Campaign Visuals</span><span class="service-tag">Story & Reels</span><span class="service-tag">Content Systems</span></div>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-num">03</div>
+        <span class="service-icon">◎</span>
+        <div class="service-name">Brand Revamp</div>
+        <p class="service-desc">For brands that have lost their edge. I audit your current identity, find the gaps, and redesign with purpose — keeping what works and rebuilding what doesn't.</p>
+        <div class="service-tags"><span class="service-tag">Brand Audit</span><span class="service-tag">Identity Refresh</span><span class="service-tag">Strategy</span></div>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-num">04</div>
+        <span class="service-icon">✦</span>
+        <div class="service-name">Print & Marketing Materials</div>
+        <p class="service-desc">Flyers, posters, business cards, and branded merchandise — crafted for crisp, print-ready output that represents your brand at its best.</p>
+        <div class="service-tags"><span class="service-tag">Flyers</span><span class="service-tag">Posters</span><span class="service-tag">Business Cards</span><span class="service-tag">Merch</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-eyebrow reveal" style="justify-content:center"><div class="eyebrow-dot"></div><span>Get In Touch</span></div>
+    <h2 class="contact-heading reveal">Let's build<br>something <em>great.</em></h2>
+    <p class="contact-sub reveal">Got a brand to build, fix, or amplify? I'm open to new projects.</p>
+    <div class="contact-links reveal">
+      <a href="mailto:anifredrick6@gmail.com" class="contact-link" id="contact-email">✉ anifredrick6@gmail.com</a>
+      <a href="tel:+2349067496647" class="contact-link" id="contact-phone">📞 +234 906 749 6647</a>
+      <a href="#" class="contact-link" id="contact-ig">📷 @fredzstudio</a>
+    </div>
+    <div class="footer-divider"></div>
+    <footer>
+      <div class="footer-logo" id="footer-logo">Fredz Studio</div>
+      <div class="footer-copy">© 2025 Fredz Studio. All rights reserved.</div>
+      <div class="footer-flag">🇳🇬 Made in Nigeria</div>
+    </footer>
+  </section>
+
+  <script>
+    // ─── Cursor ───
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e => {
+      mx=e.clientX; my=e.clientY;
+      cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+    });
+    function animRing() {
+      rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+      ring.style.left=rx+'px'; ring.style.top=ry+'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+    document.querySelectorAll('a,button,.project-card,.service-card,.tool-card').forEach(el => {
+      el.addEventListener('mouseenter',()=>{cursor.style.width='18px';cursor.style.height='18px';ring.style.width='54px';ring.style.height='54px';ring.style.borderColor='rgba(232,201,126,0.8)';});
+      el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='38px';ring.style.height='38px';ring.style.borderColor='rgba(232,201,126,0.5)';});
+    });
+
+    // ─── Scroll reveal ───
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // ─── XP bars ───
+    const xpObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(e.isIntersecting) {
+          e.target.querySelectorAll('.xp-fill').forEach(b => { b.style.width = b.dataset.w + '%'; });
+        }
+      });
+    }, { threshold: 0.3 });
+    const aboutSec = document.getElementById('about');
+    if(aboutSec) xpObs.observe(aboutSec);
+
+    // ─── Load settings from JSON ───
+    async function loadSettings() {
+      try {
+        const res = await fetch('/content/settings.json');
+        if(!res.ok) return;
+        const s = await res.json();
+
+        // Studio name
+        if(s.studioName) {
+          document.querySelectorAll('#nav-studio-name, #footer-logo').forEach(el => el.textContent = s.studioName);
+          document.getElementById('hero-studio-name').textContent = s.studioName;
+          document.title = s.studioName;
+        }
+
+        // Logo
+        if(s.logo) {
+          const logoWrap = document.getElementById('nav-logo-img');
+          logoWrap.innerHTML = `<img src="${s.logo}" alt="${s.studioName} logo">`;
+        }
+
+        // Stats
+        if(s.yearsExp) {
+          const expEl = document.getElementById('stat-exp');
+          expEl.innerHTML = s.yearsExp + '<span>+</span>';
+          if(s.yearsExp.includes('+')) expEl.textContent = s.yearsExp;
+        }
+        if(s.projectCount) {
+          document.getElementById('stat-projects').innerHTML = s.projectCount + '<span></span>';
+        }
+
+        // About
+        if(s.about) {
+          if(s.about.heading) document.getElementById('about-heading').textContent = s.about.heading;
+          if(s.about.p1) document.getElementById('about-p1').textContent = s.about.p1;
+          if(s.about.p2) document.getElementById('about-p2').textContent = s.about.p2;
+          if(s.about.p3) document.getElementById('about-p3').textContent = s.about.p3;
+        }
+
+        // Contact
+        if(s.email) {
+          const emailEl = document.getElementById('contact-email');
+          emailEl.href = 'mailto:' + s.email;
+          emailEl.textContent = '✉ ' + s.email;
+          document.getElementById('nav-cta').href = 'mailto:' + s.email;
+        }
+        if(s.phone) {
+          const phoneEl = document.getElementById('contact-phone');
+          phoneEl.href = 'tel:' + s.phone.replace(/\s/g,'');
+          phoneEl.textContent = '📞 ' + s.phone;
+        }
+        if(s.instagram) {
+          document.getElementById('contact-ig').textContent = '📷 ' + s.instagram;
+        }
+
+      } catch(e) {
+        console.log('Settings not found, using defaults.');
+      }
+    }
+
+    // ─── Load projects from JSON files ───
+    const projectFiles = ['astris', 'xeron', 'wizpay'];
+
+    async function loadProjects() {
+      const grid = document.getElementById('projects-grid');
+      const projects = [];
+
+      for(const slug of projectFiles) {
+        try {
+          const res = await fetch(`/content/projects/${slug}.json`);
+          if(!res.ok) continue;
+          const p = await res.json();
+          if(p.published !== false) projects.push({ ...p, slug });
+        } catch(e) {
+          console.log(`Project ${slug} not found.`);
+        }
+      }
+
+      // Sort by order
+      projects.sort((a,b) => (a.order||99) - (b.order||99));
+
+      if(projects.length === 0) {
+        grid.innerHTML = '<div style="grid-column:span 3;text-align:center;padding:60px;color:var(--muted);font-family:var(--font);font-size:0.85rem">No projects published yet.</div>';
+        return;
+      }
+
+      grid.innerHTML = projects.map((p, i) => {
+        const delay = i === 0 ? '' : i === 1 ? 'reveal-delay-1' : 'reveal-delay-2';
+        const accent = p.accentColor || '#e8c97e';
+        const bg = p.heroBg || '#0a0a0a';
+
+        // Cover image or colored bg
+        const bgStyle = p.coverImage
+          ? `background:url('${p.coverImage}') center/cover no-repeat, ${bg};`
+          : `background:${bg};`;
+
+        // Logo/visual area
+        const visual = p.logoImage
+          ? `<img src="${p.logoImage}" alt="${p.title}" style="max-width:120px;max-height:120px;object-fit:contain;">`
+          : `<span style="font-family:var(--font);font-size:2.2rem;font-weight:800;color:${accent};letter-spacing:-0.04em;">${p.title}</span>`;
+
+        return `
+          <a href="project.html?slug=${p.slug}" class="project-card reveal ${delay}" style="${bgStyle}text-decoration:none;display:block;">
+            <div class="project-visual">${visual}</div>
+            <div class="project-overlay">
+              <div class="project-number" style="color:${accent}">0${i+1} — ${p.industry || 'Brand Identity'}</div>
+              <div class="project-name">${p.title}</div>
+              <div class="project-type">${p.services || ''}</div>
+            </div>
+            <div class="project-arrow">↗</div>
+          </a>`;
+      }).join('');
+
+      // Re-observe new elements
+      grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    }
+
+    // ─── Init ───
+    loadSettings();
+    loadProjects();
+  </script>
+</body>
+</html>

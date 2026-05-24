@@ -1,16 +1,8 @@
 {
-  "title": "Xeron",
+  "coverImage": "/images/uploads/xeron-3.jpg",
   "client": "Xeron",
-  "industry": "NGO · Social Care",
-  "services": "Logo · Colors · Mockups · Brand Guidelines",
-  "year": "2024",
-  "tagline": "Care, Love & Equality with Xeron!",
   "shortDesc": "A complete brand identity system for a social care organisation dedicated to homeless and vulnerable children — built on warmth, trust, and the belief that every child deserves equal love.",
-  "heroBg": "#065DCE",
-  "accentColor": "#FFD426",
-  "textColor": "#ffffff",
-  "coverImage": "",
-  "logoImage": "",
+  "published": true,
   "sections": [
     {
       "title": "Brand Mission",
@@ -29,14 +21,42 @@
       "body": "Nutmeg Font is the primary typeface — rounded and warm, chosen for its approachable character that speaks directly to Xeron's human-centered mission. Clash Grotesk Family Font serves as the secondary typeface for body copy and supporting text."
     }
   ],
-  "images": [],
-  "palette": [
-    { "name": "Xeron Blue", "hex": "#065DCE", "role": "Primary" },
-    { "name": "Sky Blue", "hex": "#0099FF", "role": "Primary" },
-    { "name": "Gold", "hex": "#E6B800", "role": "Primary" },
-    { "name": "Yellow", "hex": "#FFD426", "role": "Primary" },
-    { "name": "White", "hex": "#FFFFFF", "role": "Neutral" }
-  ],
+  "tagline": "Care, Love & Equality with Xeron!",
   "order": 2,
-  "published": true
+  "logoImage": "",
+  "textColor": "#ffffff",
+  "title": "Xeron",
+  "images": [],
+  "accentColor": "#FFD426",
+  "palette": [
+    {
+      "name": "Xeron Blue",
+      "hex": "#065DCE",
+      "role": "Primary"
+    },
+    {
+      "name": "Sky Blue",
+      "hex": "#0099FF",
+      "role": "Primary"
+    },
+    {
+      "name": "Gold",
+      "hex": "#E6B800",
+      "role": "Primary"
+    },
+    {
+      "name": "Yellow",
+      "hex": "#FFD426",
+      "role": "Primary"
+    },
+    {
+      "name": "White",
+      "hex": "#FFFFFF",
+      "role": "Neutral"
+    }
+  ],
+  "year": "2024",
+  "services": "Logo · Colors · Mockups · Brand Guidelines",
+  "industry": "NGO · Social Care",
+  "heroBg": "#065DCE"
 }

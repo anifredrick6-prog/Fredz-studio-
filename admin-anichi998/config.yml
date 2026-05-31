@@ -1,0 +1,79 @@
+backend:
+  name: github
+  repo: anifredrick6-prog/fredz-studio
+  branch: main
+  auth_type: implicit
+  app_id: anichi998
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - name: "general"
+        label: "General Settings"
+        file: "content/settings.json"
+        format: json
+        fields:
+          - { label: "Studio Name", name: "studioName", widget: "string", default: "Fredz Studio" }
+          - { label: "Tagline", name: "tagline", widget: "string" }
+          - { label: "Your Name", name: "designerName", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Phone", name: "phone", widget: "string" }
+          - { label: "Instagram Handle", name: "instagram", widget: "string" }
+          - { label: "Years of Experience", name: "yearsExp", widget: "string" }
+          - { label: "Projects Delivered", name: "projectCount", widget: "string" }
+          - { label: "Logo", name: "logo", widget: "image", required: false }
+          - label: "About Section"
+            name: "about"
+            widget: "object"
+            fields:
+              - { label: "Heading", name: "heading", widget: "string" }
+              - { label: "Paragraph 1", name: "p1", widget: "text" }
+              - { label: "Paragraph 2", name: "p2", widget: "text" }
+              - { label: "Paragraph 3", name: "p3", widget: "text" }
+
+  - name: "projects"
+    label: "Projects"
+    folder: "content/projects"
+    create: true
+    format: json
+    extension: json
+    slug: "{{slug}}"
+    fields:
+      - { label: "Project Title", name: "title", widget: "string" }
+      - { label: "Client Name", name: "client", widget: "string" }
+      - { label: "Industry / Type", name: "industry", widget: "string" }
+      - { label: "Services", name: "services", widget: "string" }
+      - { label: "Year", name: "year", widget: "string", default: "2025" }
+      - { label: "Tagline / Slogan", name: "tagline", widget: "string", required: false }
+      - { label: "Short Description (for card)", name: "shortDesc", widget: "text" }
+      - { label: "Hero Background Color", name: "heroBg", widget: "string", default: "#0a0a0a" }
+      - { label: "Accent Color", name: "accentColor", widget: "string", default: "#e8c97e" }
+      - { label: "Text Color", name: "textColor", widget: "string", default: "#ffffff" }
+      - { label: "Cover / Hero Image", name: "coverImage", widget: "image", required: false }
+      - { label: "Logo Image", name: "logoImage", widget: "image", required: false }
+      - label: "Case Study Sections"
+        name: "sections"
+        widget: "list"
+        fields:
+          - { label: "Section Title", name: "title", widget: "string" }
+          - { label: "Content", name: "body", widget: "text" }
+      - label: "Project Images (Mockups)"
+        name: "images"
+        widget: "list"
+        fields:
+          - { label: "Image", name: "image", widget: "image" }
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+      - label: "Color Palette"
+        name: "palette"
+        widget: "list"
+        max: 6
+        fields:
+          - { label: "Color Name", name: "name", widget: "string" }
+          - { label: "Hex Code", name: "hex", widget: "string" }
+          - { label: "Role", name: "role", widget: "string" }
+      - { label: "Order (1, 2, 3...)", name: "order", widget: "number", default: 1 }
+      - { label: "Published", name: "published", widget: "boolean", default: true }

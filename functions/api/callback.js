@@ -2,6 +2,7 @@ export async function onRequestGet(context) {
   const { request, env } = context;
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
+  const state = url.searchParams.get("state") || "";
 
   if (!code) {
     return new Response("Missing code", { status: 400 });
@@ -27,32 +28,34 @@ export async function onRequestGet(context) {
   }
 
   const token = tokenData.access_token;
-  const provider = "github";
-  const message = JSON.stringify({ token, provider });
 
-  const content = `<!DOCTYPE html>
+  const html = `<!DOCTYPE html>
 <html>
-<head><title>Authenticating...</title></head>
+<head><title>Redirecting...</title></head>
 <body>
 <script>
   const token = ${JSON.stringify(token)};
-  const provider = "github";
-  const msg = "authorization:github:success:" + JSON.stringify({ token, provider });
+  const state = ${JSON.stringify(state)};
+  const msg = "authorization:github:success:" + JSON.stringify({ token, provider: "github" });
   
-  if (window.opener) {
-    window.opener.postMessage(msg, "*");
-    setTimeout(() => window.close(), 500);
-  } else {
-    // Mobile fallback - store token and redirect
-    sessionStorage.setItem("decap-cms-token", token);
-    window.location.href = "/admin/";
+  try {
+    if (window.opener && !window.opener.closed) {
+      window.opener.postMessage(msg, "*");
+      setTimeout(() => window.close(), 300);
+    } else {
+      // Direct redirect for mobile - pass token in URL hash
+      const adminUrl = "/admin/#token=" + encodeURIComponent(token);
+      window.location.replace(adminUrl);
+    }
+  } catch(e) {
+    window.location.replace("/admin/#token=" + encodeURIComponent(token));
   }
 </script>
-<p>Authenticating...</p>
+<p style="font-family:sans-serif;padding:20px">Redirecting to admin...</p>
 </body>
 </html>`;
 
-  return new Response(content, {
+  return new Response(html, {
     headers: { "Content-Type": "text/html" },
   });
-}
+    }

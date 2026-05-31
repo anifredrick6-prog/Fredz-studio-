@@ -7,19 +7,6 @@
   <meta name="robots" content="noindex, nofollow" />
 </head>
 <body>
-  <script>
-    // Pre-authenticate with GitHub token from config
-    window.CMS_MANUAL_INIT = true;
-  </script>
-  <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
-  <script>
-    // Initialize CMS without auth requirement
-    SveltiaCMS.init({
-      config: {
-        load_config_file: true,
-        local_backend: false
-      }
-    });
-  </script>
+  <script data-cfasync="false" src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
 </body>
 </html>

@@ -4,7 +4,6 @@ backend:
   branch: main
   base_url: https://fredzstudio.pages.dev
   auth_endpoint: /api/auth
-  auth_type: implicit 
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"

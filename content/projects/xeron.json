@@ -1,8 +1,70 @@
 {
-  "coverImage": "/images/uploads/xeron-3.jpg",
+  "title": "Xeron",
   "client": "Xeron",
+  "industry": "NGO · Social Care",
+  "services": "Logo · Colors · Mockups · Brand Guidelines",
+  "year": "2024",
+  "tagline": "Care, Love & Equality with Xeron!",
   "shortDesc": "A complete brand identity system for a social care organisation dedicated to homeless and vulnerable children — built on warmth, trust, and the belief that every child deserves equal love.",
-  "published": true,
+  "heroBg": "#065DCE",
+  "accentColor": "#FFD426",
+  "textColor": "#ffffff",
+  "coverImage": "/images/uploads/xeron-3.jpg",
+  "logoImage": "/images/uploads/1780471990251-XERON_7.jpg",
+  "images": [
+    {
+      "url": "/images/uploads/1780472159720-Xeron_T-shirt_3.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780472172008-XERON_11.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780472187240-XERON_8.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780472201038-XERON_9.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780472215667-XERON_10.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780472228230-XERON_4.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780472239046-XERON_12.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780472262786-XERON_2.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780472279852-XERON_3.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780472291262-XERON_5.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780472303019-XERON_6.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780472315010-Xeron_Flag_Mockup_copy.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780472387316-Xeron_Hoodie_copy.jpg",
+      "caption": ""
+    }
+  ],
   "sections": [
     {
       "title": "Brand Mission",
@@ -21,47 +83,33 @@
       "body": "Nutmeg Font is the primary typeface — rounded and warm, chosen for its approachable character that speaks directly to Xeron's human-centered mission. Clash Grotesk Family Font serves as the secondary typeface for body copy and supporting text."
     }
   ],
-  "tagline": "Care, Love & Equality with Xeron!",
-  "order": 2,
-  "logoImage": "/images/uploads/xeron-3.jpg",
-  "textColor": "#ffffff",
-  "title": "Xeron",
-  "images": [
-    {
-      "image": "/images/uploads/xeron-2.jpg",
-      "caption": "Brand Overview"
-    }
-  ],
-  "accentColor": "#FFD426",
   "palette": [
     {
-      "name": "Xeron Blue",
       "hex": "#065DCE",
+      "name": "Xeron Blue",
       "role": "Primary"
     },
     {
-      "name": "Sky Blue",
       "hex": "#0099FF",
+      "name": "Sky Blue",
       "role": "Primary"
     },
     {
-      "name": "Gold",
       "hex": "#E6B800",
+      "name": "Gold",
       "role": "Primary"
     },
     {
-      "name": "Yellow",
       "hex": "#FFD426",
+      "name": "Yellow",
       "role": "Primary"
     },
     {
-      "name": "White",
       "hex": "#FFFFFF",
+      "name": "White",
       "role": "Neutral"
     }
   ],
-  "year": "2024",
-  "services": "Logo · Colors · Mockups · Brand Guidelines",
-  "industry": "NGO · Social Care",
-  "heroBg": "#065DCE"
+  "order": 2,
+  "published": true
 }

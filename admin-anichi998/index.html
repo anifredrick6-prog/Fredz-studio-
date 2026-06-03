@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fredz Studio — Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0a; --surface: #141414; --surface2: #1a1a1a;
+      --border: rgba(255,255,255,0.08); --accent: #e8c97e; --accent2: #d4a853;
+      --text: #f0ece4; --muted: #888; --faint: #444;
+      --red: #ff5555; --green: #50fa7b;
+      --font: 'Sora', sans-serif; --body: 'DM Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body); min-height: 100vh; display: flex; }
+
+    /* LOADING */
+    #loading { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; z-index: 9999; }
+    .loading-mark { width: 48px; height: 48px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font); font-weight: 800; font-size: 1.1rem; color: #0a0a0a; animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.05)} }
+    .loading-text { font-family: var(--font); font-size: 0.78rem; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+
+    /* SIDEBAR */
+    .sidebar { position: fixed; left: 0; top: 0; bottom: 0; width: 240px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; z-index: 100; overflow-y: auto; }
+    .sidebar-logo { padding: 24px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .sidebar-logo-mark { width: 32px; height: 32px; background: var(--accent); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: var(--font); font-weight: 800; font-size: 0.78rem; color: #0a0a0a; flex-shrink: 0; overflow: hidden; }
+    .sidebar-logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+    .sidebar-title { font-family: var(--font); font-weight: 700; font-size: 0.9rem; color: var(--text); }
+    .sidebar-sub { font-size: 0.68rem; color: var(--muted); margin-top: 1px; }
+    nav.sidebar-nav { flex: 1; padding: 16px 12px; }
+    .nav-label { font-family: var(--font); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); padding: 0 8px; margin: 16px 0 8px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; font-size: 0.85rem; color: var(--muted); cursor: pointer; transition: all .2s; margin-bottom: 2px; border: none; background: none; width: 100%; text-align: left; font-family: var(--body); }
+    .nav-item:hover { background: var(--surface2); color: var(--text); }
+    .nav-item.active { background: rgba(232,201,126,0.12); color: var(--accent); }
+    .sidebar-bottom { padding: 16px 12px; border-top: 1px solid var(--border); }
+    .view-site { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 10px; border-radius: 8px; background: rgba(232,201,126,0.08); border: 1px solid rgba(232,201,126,0.2); color: var(--accent); font-family: var(--font); font-size: 0.78rem; font-weight: 600; text-decoration: none; transition: all .2s; }
+    .view-site:hover { background: rgba(232,201,126,0.16); }
+
+    /* MAIN */
+    #app { display: none; width: 100%; }
+    .main { margin-left: 240px; min-height: 100vh; }
+    .page { display: none; padding: 40px 48px; max-width: 900px; }
+    .page.active { display: block; }
+    .page-header { margin-bottom: 36px; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+    .page-header-left h1 { font-family: var(--font); font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em; }
+    .page-header-left p { color: var(--muted); font-size: 0.88rem; margin-top: 6px; }
+
+    /* CARDS */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-bottom: 20px; }
+    .card-title { font-family: var(--font); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+
+    /* FORMS */
+    .form-group { margin-bottom: 20px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    label { display: block; font-family: var(--font); font-size: 0.72rem; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+    input[type="text"], input[type="email"], input[type="tel"], textarea, select { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 11px 14px; color: var(--text); font-family: var(--body); font-size: 0.9rem; transition: border-color .2s; outline: none; }
+    input:focus, textarea:focus { border-color: rgba(232,201,126,0.4); }
+    textarea { min-height: 100px; resize: vertical; line-height: 1.6; }
+    input[type="color"] { width: 44px; height: 38px; padding: 2px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface2); cursor: pointer; }
+    .color-row { display: flex; gap: 8px; align-items: center; }
+    .color-row input[type="text"] { flex: 1; }
+
+    /* BUTTONS */
+    .btn { font-family: var(--font); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; padding: 10px 22px; border-radius: 8px; border: none; cursor: pointer; transition: all .2s; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary { background: var(--accent); color: #0a0a0a; }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: rgba(232,201,126,0.3); }
+    .btn-danger { background: rgba(255,85,85,0.1); color: var(--red); border: 1px solid rgba(255,85,85,0.2); }
+    .btn-danger:hover { background: rgba(255,85,85,0.2); }
+    .btn-sm { padding: 7px 14px; font-size: 0.72rem; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+    /* TOGGLE */
+    .toggle-row { display: flex; align-items: center; gap: 12px; }
+    .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; inset: 0; background: var(--surface2); border-radius: 100px; border: 1px solid var(--border); cursor: pointer; transition: .3s; }
+    .toggle-slider::before { content: ''; position: absolute; width: 16px; height: 16px; background: var(--muted); border-radius: 50%; top: 3px; left: 3px; transition: .3s; }
+    .toggle input:checked + .toggle-slider { background: rgba(232,201,126,0.15); border-color: var(--accent); }
+    .toggle input:checked + .toggle-slider::before { background: var(--accent); transform: translateX(20px); }
+    .toggle-label { font-size: 0.85rem; color: var(--muted); }
+
+    /* IMAGE UPLOAD - fixed preview */
+    .img-upload-box { border: 2px dashed var(--border); border-radius: 12px; overflow: hidden; transition: border-color .2s; position: relative; }
+    .img-upload-box:hover { border-color: rgba(232,201,126,0.35); }
+    .img-upload-box.has-image { border-style: solid; border-color: rgba(232,201,126,0.2); }
+    .img-upload-placeholder { padding: 28px; text-align: center; cursor: pointer; }
+    .img-upload-placeholder input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .img-upload-icon { font-size: 2rem; margin-bottom: 8px; }
+    .img-upload-text { font-size: 0.8rem; color: var(--muted); font-family: var(--font); }
+    .img-preview-wrap { position: relative; }
+    .img-preview-wrap img { width: 100%; height: 220px; object-fit: contain; display: block; background: var(--surface2); padding: 10px; }
+    .img-preview-actions { display: flex; gap: 8px; padding: 10px 12px; background: var(--surface2); border-top: 1px solid var(--border); }
+    .img-preview-actions input[type="file"] { display: none; }
+
+    /* GALLERY */
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 14px; }
+    .gallery-thumb { position: relative; border-radius: 10px; overflow: hidden; background: var(--surface2); border: 1px solid var(--border); }
+    .gallery-thumb img { width: 100%; aspect-ratio: 4/3; object-fit: contain; display: block; background: var(--surface2); padding: 6px; }
+    .gallery-thumb-bar { display: flex; align-items: center; gap: 6px; padding: 6px 8px; background: var(--surface); border-top: 1px solid var(--border); }
+    .gallery-thumb-bar input { background: transparent; border: none; color: var(--muted); font-size: 0.68rem; width: 100%; outline: none; font-family: var(--body); }
+    .gallery-thumb-remove { background: rgba(255,85,85,0.15); border: none; color: var(--red); border-radius: 4px; padding: 3px 7px; cursor: pointer; font-size: 0.7rem; flex-shrink: 0; }
+    .gallery-add-btn { aspect-ratio: 4/3; border-radius: 10px; border: 2px dashed var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.8rem; color: var(--faint); position: relative; overflow: hidden; transition: all .2s; background: var(--surface2); }
+    .gallery-add-btn:hover { border-color: rgba(232,201,126,0.4); color: var(--accent); }
+    .gallery-add-btn input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+    /* PALETTE */
+    .palette-row-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .palette-row-item input[type="text"] { }
+    .palette-row-item input[type="color"] { flex-shrink: 0; }
+
+    /* PROJECT LIST */
+    .proj-list { display: flex; flex-direction: column; gap: 10px; }
+    .proj-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; display: flex; align-items: center; gap: 16px; transition: border-color .2s; }
+    .proj-item:hover { border-color: rgba(232,201,126,0.2); }
+    .proj-dot { width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font); font-weight: 800; font-size: 0.72rem; }
+    .proj-info { flex: 1; }
+    .proj-name { font-family: var(--font); font-weight: 700; font-size: 0.95rem; }
+    .proj-meta { font-size: 0.75rem; color: var(--muted); margin-top: 3px; }
+    .status-pill { font-family: var(--font); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; }
+    .pill-live { background: rgba(80,250,123,0.1); color: var(--green); }
+    .pill-draft { background: rgba(255,255,255,0.05); color: var(--muted); }
+
+    /* SECTIONS */
+    .sec-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+    .sec-head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; }
+    .sec-head-name { flex: 1; font-family: var(--font); font-size: 0.85rem; font-weight: 600; }
+    .sec-body { padding: 0 16px 16px; display: none; }
+    .sec-body.open { display: block; }
+
+    /* DASHBOARD STATS */
+    .dash-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 28px; }
+    .dash-stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
+    .dash-num { font-family: var(--font); font-size: 2.2rem; font-weight: 800; letter-spacing: -0.04em; color: var(--accent); }
+    .dash-label { font-size: 0.75rem; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font); }
+
+    /* SAVING */
+    .saving-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: none; align-items: center; justify-content: center; z-index: 9998; }
+    .saving-overlay.show { display: flex; }
+    .saving-box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px 40px; text-align: center; }
+    .saving-spin { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 14px; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    .saving-label { font-family: var(--font); font-size: 0.82rem; color: var(--muted); }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 20px; font-family: var(--font); font-size: 0.82rem; display: flex; align-items: center; gap: 10px; transform: translateY(80px); opacity: 0; transition: all .3s; z-index: 9999; max-width: 320px; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-color: rgba(80,250,123,0.3); }
+    .toast.error { border-color: rgba(255,85,85,0.3); }
+
+    /* EDITOR HEADER */
+    .editor-head { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
+    .back-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.3rem; padding: 4px 8px; transition: color .2s; border-radius: 6px; }
+    .back-btn:hover { color: var(--text); background: var(--surface2); }
+
+    @media(max-width:768px) {
+      .sidebar { width: 100%; height: auto; position: relative; }
+      .main { margin-left: 0; }
+      .page { padding: 24px 16px; }
+      .dash-grid { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="loading">
+  <div class="loading-mark">FS</div>
+  <div class="loading-text">Loading Admin...</div>
+</div>
+
+<div class="saving-overlay" id="savingOverlay">
+  <div class="saving-box">
+    <div class="saving-spin"></div>
+    <div class="saving-label" id="savingLabel">Saving...</div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <span id="toastIcon">✓</span>
+  <span id="toastMsg">Saved</span>
+</div>
+
+<div id="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark" id="sidebarMark">FS</div>
+      <div>
+        <div class="sidebar-title" id="sidebarTitle">Fredz Studio</div>
+        <div class="sidebar-sub">Admin Panel</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-label">Overview</div>
+      <button class="nav-item active" data-page="dashboard">◈ &nbsp;Dashboard</button>
+      <div class="nav-label">Content</div>
+      <button class="nav-item" data-page="settings">⚙ &nbsp;Site Settings</button>
+      <button class="nav-item" data-page="projects">◎ &nbsp;Projects</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="/" target="_blank" class="view-site">↗ &nbsp;View Live Site</a>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div class="page-header-left">
+          <h1>Dashboard</h1>
+          <p>Welcome back. Your portfolio is live.</p>
+        </div>
+      </div>
+      <div class="dash-grid">
+        <div class="dash-stat"><div class="dash-num" id="dashProjects">0</div><div class="dash-label">Projects</div></div>
+        <div class="dash-stat"><div class="dash-num" id="dashLive">0</div><div class="dash-label">Live</div></div>
+        <div class="dash-stat"><div class="dash-num">✓</div><div class="dash-label">Site Active</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Quick Actions</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="openEditor('new')">+ New Project</button>
+          <button class="btn btn-secondary" onclick="nav('settings')">Edit Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings">
+      <div class="page-header">
+        <div class="page-header-left"><h1>Site Settings</h1><p>Edit your studio info and bio.</p></div>
+        <button class="btn btn-primary" onclick="saveSettings()">Save</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Identity</div>
+        <div class="form-row">
+          <div class="form-group"><label>Studio Name</label><input type="text" id="s-studioName"></div>
+          <div class="form-group"><label>Your Name</label><input type="text" id="s-designerName"></div>
+        </div>
+        <div class="form-group"><label>Tagline</label><input type="text" id="s-tagline"></div>
+        <div class="form-group">
+          <label>Logo</label>
+          <div class="img-upload-box" id="logoBox">
+            <div class="img-upload-placeholder" id="logoPlaceholder">
+              <input type="file" accept="image/*" onchange="uploadLogo(event)">
+              <div class="img-upload-icon">🖼</div>
+              <div class="img-upload-text">Tap to upload your logo</div>
+            </div>
+            <div class="img-preview-wrap" id="logoPreviewWrap" style="display:none">
+              <img id="logoPreview" src="" alt="Logo">
+              <div class="img-preview-actions">
+                <label class="btn btn-secondary btn-sm" style="cursor:pointer">
+                  Replace
+                  <input type="file" accept="image/*" onchange="uploadLogo(event)">
+                </label>
+                <button class="btn btn-danger btn-sm" onclick="removeLogo()">Remove</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Stats</div>
+        <div class="form-row">
+          <div class="form-group"><label>Years of Experience</label><input type="text" id="s-yearsExp" placeholder="2+"></div>
+          <div class="form-group"><label>Projects Delivered</label><input type="text" id="s-projectCount" placeholder="50+"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">About Section</div>
+        <div class="form-group"><label>Heading</label><input type="text" id="s-aboutHeading"></div>
+        <div class="form-group"><label>Paragraph 1</label><textarea id="s-p1" rows="3"></textarea></div>
+        <div class="form-group"><label>Paragraph 2</label><textarea id="s-p2" rows="3"></textarea></div>
+        <div class="form-group"><label>Paragraph 3</label><textarea id="s-p3" rows="3"></textarea></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Contact</div>
+        <div class="form-row">
+          <div class="form-group"><label>Email</label><input type="email" id="s-email"></div>
+          <div class="form-group"><label>Phone</label><input type="tel" id="s-phone"></div>
+        </div>
+        <div class="form-group"><label>Instagram</label><input type="text" id="s-instagram"></div>
+      </div>
+
+      <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+    </div>
+
+    <!-- PROJECTS LIST -->
+    <div class="page" id="page-projects">
+      <div class="page-header">
+        <div class="page-header-left"><h1>Projects</h1><p>Manage your brand identity case studies.</p></div>
+        <button class="btn btn-primary" onclick="openEditor('new')">+ New Project</button>
+      </div>
+      <div class="proj-list" id="projList"></div>
+    </div>
+
+    <!-- PROJECT EDITOR -->
+    <div class="page" id="page-editor">
+      <div class="editor-head">
+        <button class="back-btn" onclick="nav('projects');renderProjList()">←</button>
+        <div style="flex:1">
+          <h1 class="page-header-left" style="font-family:var(--font);font-size:1.8rem;font-weight:800;letter-spacing:-0.03em" id="editorTitle">New Project</h1>
+        </div>
+        <button class="btn btn-danger btn-sm" id="deleteProjBtn" onclick="deleteProject()" style="display:none">Delete</button>
+        <button class="btn btn-primary btn-sm" onclick="saveProject()">Save & Publish</button>
+      </div>
+
+      <!-- Basic Info -->
+      <div class="card">
+        <div class="card-title">Basic Info</div>
+        <div class="form-row">
+          <div class="form-group"><label>Project Title</label><input type="text" id="p-title" placeholder="e.g. ASTRIS"></div>
+          <div class="form-group"><label>Client Name</label><input type="text" id="p-client"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Industry / Type</label><input type="text" id="p-industry" placeholder="e.g. Deep Tech · Aerospace"></div>
+          <div class="form-group"><label>Year</label><input type="text" id="p-year" placeholder="2025"></div>
+        </div>
+        <div class="form-group"><label>Services</label><input type="text" id="p-services" placeholder="e.g. Logo · Colors · Typography"></div>
+        <div class="form-group"><label>Tagline / Slogan</label><input type="text" id="p-tagline"></div>
+        <div class="form-group"><label>Short Description (shown on card)</label><textarea id="p-shortDesc" rows="3"></textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>Display Order</label><input type="text" id="p-order" placeholder="1"></div>
+          <div class="form-group" style="padding-top:26px">
+            <div class="toggle-row">
+              <label class="toggle"><input type="checkbox" id="p-published" checked><span class="toggle-slider"></span></label>
+              <span class="toggle-label">Published</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme -->
+      <div class="card">
+        <div class="card-title">Theme Colors</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Hero Background</label>
+            <div class="color-row">
+              <input type="color" id="p-heroBg-c" value="#0a0a0a" oninput="sync('p-heroBg','p-heroBg-c')">
+              <input type="text" id="p-heroBg" placeholder="#0a0a0a" oninput="syncC('p-heroBg','p-heroBg-c')">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Accent Color</label>
+            <div class="color-row">
+              <input type="color" id="p-accent-c" value="#e8c97e" oninput="sync('p-accent','p-accent-c')">
+              <input type="text" id="p-accent" placeholder="#e8c97e" oninput="syncC('p-accent','p-accent-c')">
+            </div>
+          </div>
+        </div>
+        <div class="form-group" style="max-width:300px">
+          <label>Text Color</label>
+          <div class="color-row">
+            <input type="color" id="p-textColor-c" value="#ffffff" oninput="sync('p-textColor','p-textColor-c')">
+            <input type="text" id="p-textColor" placeholder="#ffffff" oninput="syncC('p-textColor','p-textColor-c')">
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Image -->
+      <div class="card">
+        <div class="card-title">Hero / Cover Image</div>
+        <div class="img-upload-box" id="heroBox">
+          <div class="img-upload-placeholder" id="heroPlaceholder">
+            <input type="file" accept="image/*" onchange="uploadHero(event)">
+            <div class="img-upload-icon">🖼</div>
+            <div class="img-upload-text">Tap to upload a cover image for this project</div>
+          </div>
+          <div class="img-preview-wrap" id="heroPreviewWrap" style="display:none">
+            <img id="heroPreview" src="" alt="Hero">
+            <div class="img-preview-actions">
+              <label class="btn btn-secondary btn-sm" style="cursor:pointer">
+                Replace
+                <input type="file" accept="image/*" onchange="uploadHero(event)">
+              </label>
+              <button class="btn btn-danger btn-sm" onclick="removeHero()">Remove</button>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" id="p-coverImage">
+      </div>
+
+      <!-- Logo Image -->
+      <div class="card">
+        <div class="card-title">Logo Image (floating mark in hero)</div>
+        <div class="img-upload-box" id="logoImgBox">
+          <div class="img-upload-placeholder" id="logoImgPlaceholder">
+            <input type="file" accept="image/*" onchange="uploadLogoImg(event)">
+            <div class="img-upload-icon">✦</div>
+            <div class="img-upload-text">Tap to upload the brand logo mark</div>
+          </div>
+          <div class="img-preview-wrap" id="logoImgPreviewWrap" style="display:none">
+            <img id="logoImgPreview" src="" alt="Logo">
+            <div class="img-preview-actions">
+              <label class="btn btn-secondary btn-sm" style="cursor:pointer">
+                Replace
+                <input type="file" accept="image/*" onchange="uploadLogoImg(event)">
+              </label>
+              <button class="btn btn-danger btn-sm" onclick="removeLogoImg()">Remove</button>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" id="p-logoImage">
+      </div>
+
+      <!-- Project Images Gallery -->
+      <div class="card">
+        <div class="card-title">Project Images <span style="color:var(--faint);font-weight:400;font-size:0.7rem;text-transform:none;letter-spacing:0">— mockups, brand assets, gifs</span></div>
+        <p style="font-size:0.82rem;color:var(--muted);margin-bottom:14px">Upload all your project visuals here. They appear as a gallery on the project page.</p>
+        <div class="gallery-grid" id="galleryGrid">
+          <div class="gallery-add-btn">
+            <input type="file" accept="image/*,image/gif" multiple onchange="uploadGalleryImages(event)">
+            +
+          </div>
+        </div>
+      </div>
+
+      <!-- Case Study Sections -->
+      <div class="card">
+        <div class="card-title">Case Study Sections <button class="btn btn-secondary btn-sm" onclick="addSection()">+ Add</button></div>
+        <div id="sectionsList"></div>
+      </div>
+
+      <!-- Color Palette -->
+      <div class="card">
+        <div class="card-title">Color Palette <button class="btn btn-secondary btn-sm" onclick="addPaletteColor()">+ Add</button></div>
+        <div id="paletteList"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // ─── STATE ───
+  let TOKEN = '', REPO = 'anifredrick6-prog/Fredz-studio-', BRANCH = 'main';
+  let settings = {}, projects = {}, currentSlug = null;
+  let galleryImages = []; // {url, caption}
+
+  // ─── INIT ───
+  async function init() {
+    try {
+      const r = await fetch('/api/token');
+      const d = await r.json();
+      if (!d.token) throw new Error('no token');
+      TOKEN = d.token;
+      await Promise.all([loadSettings(), loadAllProjects()]);
+      applySettings();
+      renderProjList();
+      updateDash();
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+    } catch(e) {
+      document.getElementById('loading').innerHTML = `<div style="text-align:center;padding:40px"><div style="font-size:2rem;margin-bottom:12px">⚠</div><div style="font-family:var(--font);color:var(--red)">Authentication failed</div><div style="font-size:0.8rem;color:var(--muted);margin-top:8px">Check GITHUB_TOKEN in Cloudflare environment variables</div></div>`;
+    }
+  }
+
+  // ─── GITHUB API ───
+  const GH = `https://api.github.com/repos/${REPO}`;
+  function ghHeaders() { return { Authorization: `token ${TOKEN}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }; }
+
+  async function ghGet(path) {
+    const r = await fetch(`${GH}/contents/${path}`, { headers: ghHeaders() });
+    if (!r.ok) return null;
+    return r.json();
+  }
+
+  async function ghPut(path, content, sha = null, msg = 'Update via Fredz Admin') {
+    const body = { message: msg, content: btoa(unescape(encodeURIComponent(content))), branch: BRANCH };
+    if (sha) body.sha = sha;
+    const r = await fetch(`${GH}/contents/${path}`, { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+    return r.json();
+  }
+
+  async function ghDelete(path, sha, msg = 'Delete via Fredz Admin') {
+    await fetch(`${GH}/contents/${path}`, { method: 'DELETE', headers: ghHeaders(), body: JSON.stringify({ message: msg, sha, branch: BRANCH }) });
+  }
+
+  async function ghUploadImage(file) {
+    const base64 = await toBase64(file);
+    const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+    const path = `images/uploads/${filename}`;
+    const existing = await ghGet(path);
+    const body = { message: 'Upload image via Fredz Admin', content: base64, branch: BRANCH };
+    if (existing) body.sha = existing.sha;
+    await fetch(`${GH}/contents/${path}`, { method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body) });
+    return `/images/uploads/${filename}`;
+  }
+
+  function toBase64(file) {
+    return new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = e => res(e.target.result.split(',')[1]);
+      r.onerror = rej;
+      r.readAsDataURL(file);
+    });
+  }
+
+  function parseGHContent(content) {
+    return JSON.parse(decodeURIComponent(escape(atob(content.replace(/\s/g,'')))));
+  }
+
+  // ─── LOAD DATA ───
+  async function loadSettings() {
+    const f = await ghGet('content/settings.json');
+    if (f) settings = parseGHContent(f.content);
+  }
+
+  async function loadAllProjects() {
+    projects = {};
+    const dir = await ghGet('content/projects');
+    if (!dir || !Array.isArray(dir)) return;
+    for (const f of dir) {
+      if (!f.name.endsWith('.json')) continue;
+      const slug = f.name.replace('.json','');
+      const file = await ghGet(`content/projects/${slug}.json`);
+      if (file) projects[slug] = { data: parseGHContent(file.content), sha: file.sha };
+    }
+  }
+
+  // ─── APPLY SETTINGS ───
+  function applySettings() {
+    if (settings.studioName) { document.getElementById('sidebarTitle').textContent = settings.studioName; document.title = settings.studioName + ' — Admin'; }
+    if (settings.logo) { document.getElementById('sidebarMark').innerHTML = `<img src="${settings.logo}" alt="logo">`; }
+    // Fill form
+    const map = { studioName:'s-studioName', designerName:'s-designerName', tagline:'s-tagline', email:'s-email', phone:'s-phone', instagram:'s-instagram', yearsExp:'s-yearsExp', projectCount:'s-projectCount' };
+    Object.entries(map).forEach(([k,id]) => { const el = document.getElementById(id); if(el && settings[k]) el.value = settings[k]; });
+    if (settings.about) {
+      const a = settings.about;
+      if(a.heading) document.getElementById('s-aboutHeading').value = a.heading;
+      if(a.p1) document.getElementById('s-p1').value = a.p1;
+      if(a.p2) document.getElementById('s-p2').value = a.p2;
+      if(a.p3) document.getElementById('s-p3').value = a.p3;
+    }
+    if (settings.logo) showLogoPreview(settings.logo);
+  }
+
+  // ─── NAV ───
+  function nav(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const page = document.getElementById('page-' + pageId);
+    if (page) page.classList.add('active');
+    const navBtn = document.querySelector(`[data-page="${pageId}"]`);
+    if (navBtn) navBtn.classList.add('active');
+  }
+
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      nav(btn.dataset.page);
+      if (btn.dataset.page === 'projects') renderProjList();
+    });
+  });
+
+  function updateDash() {
+    const slugs = Object.keys(projects);
+    document.getElementById('dashProjects').textContent = slugs.length;
+    document.getElementById('dashLive').textContent = slugs.filter(s => projects[s].data.published !== false).length;
+  }
+
+  // ─── PROJECT LIST ───
+  function renderProjList() {
+    const list = document.getElementById('projList');
+    const slugs = Object.keys(projects);
+    if (!slugs.length) { list.innerHTML = '<div style="text-align:center;padding:48px;color:var(--muted);font-family:var(--font);font-size:0.85rem">No projects yet. Tap "+ New Project".</div>'; return; }
+    list.innerHTML = slugs.sort((a,b) => (projects[a].data.order||99)-(projects[b].data.order||99)).map(slug => {
+      const p = projects[slug].data;
+      const accent = p.accentColor || '#e8c97e';
+      const bg = p.heroBg || '#1a1a1a';
+      return `
+        <div class="proj-item">
+          <div class="proj-dot" style="background:${bg};color:${accent}">${(p.title||'?').slice(0,2)}</div>
+          <div class="proj-info">
+            <div class="proj-name">${p.title||slug}</div>
+            <div class="proj-meta">${p.industry||''} ${p.year ? '· '+p.year : ''}</div>
+          </div>
+          <span class="status-pill ${p.published!==false?'pill-live':'pill-draft'}">${p.published!==false?'Live':'Draft'}</span>
+          <button class="btn btn-secondary btn-sm" onclick="openEditor('${slug}')">Edit</button>
+        </div>`;
+    }).join('');
+  }
+
+  // ─── PROJECT EDITOR ───
+  function openEditor(slug) {
+    currentSlug = slug === 'new' ? null : slug;
+    nav('editor');
+    document.getElementById('editorTitle').textContent = slug === 'new' ? 'New Project' : 'Edit Project';
+    document.getElementById('deleteProjBtn').style.display = slug === 'new' ? 'none' : 'inline-flex';
+
+    // Reset all fields
+    ['title','client','industry','year','services','tagline','shortDesc','order'].forEach(f => document.getElementById('p-'+f).value = '');
+    setColor('p-heroBg','p-heroBg-c','#0a0a0a');
+    setColor('p-accent','p-accent-c','#e8c97e');
+    setColor('p-textColor','p-textColor-c','#ffffff');
+    document.getElementById('p-published').checked = true;
+    document.getElementById('p-coverImage').value = '';
+    document.getElementById('p-logoImage').value = '';
+    removeHero(); removeLogoImg();
+    document.getElementById('sectionsList').innerHTML = '';
+    document.getElementById('paletteList').innerHTML = '';
+    galleryImages = [];
+    renderGallery();
+
+    if (slug !== 'new' && projects[slug]) {
+      const p = projects[slug].data;
+      ['title','client','industry','year','services','tagline','shortDesc'].forEach(f => { if(p[f]) document.getElementById('p-'+f).value = p[f]; });
+      document.getElementById('p-order').value = p.order || 1;
+      document.getElementById('p-published').checked = p.published !== false;
+      if(p.heroBg) setColor('p-heroBg','p-heroBg-c',p.heroBg);
+      if(p.accentColor) setColor('p-accent','p-accent-c',p.accentColor);
+      if(p.textColor) setColor('p-textColor','p-textColor-c',p.textColor);
+      if(p.coverImage) { document.getElementById('p-coverImage').value = p.coverImage; showHeroPreview(p.coverImage); }
+      if(p.logoImage) { document.getElementById('p-logoImage').value = p.logoImage; showLogoImgPreview(p.logoImage); }
+      if(p.images) { galleryImages = [...p.images]; renderGallery(); }
+      if(p.sections) p.sections.forEach(s => addSection(s));
+      if(p.palette) p.palette.forEach(c => addPaletteColor(c));
+    }
+  }
+
+  function setColor(textId, colorId, val) {
+    document.getElementById(textId).value = val;
+    document.getElementById(colorId).value = val;
+  }
+  function sync(textId, colorId) { document.getElementById(textId).value = document.getElementById(colorId).value; }
+  function syncC(textId, colorId) { const v = document.getElementById(textId).value; if(/^#[0-9a-fA-F]{6}$/.test(v)) document.getElementById(colorId).value = v; }
+
+  // ─── HERO IMAGE ───
+  async function uploadHero(e) {
+    const file = e.target.files[0]; if(!file) return;
+    showSaving('Uploading cover image...');
+    try {
+      const url = await ghUploadImage(file);
+      document.getElementById('p-coverImage').value = url;
+      showHeroPreview(url);
+      hideSaving(); toast('Cover image uploaded ✓');
+    } catch(err) { hideSaving(); toast('Upload failed','error'); }
+  }
+  function showHeroPreview(url) {
+    document.getElementById('heroPlaceholder').style.display = 'none';
+    document.getElementById('heroPreviewWrap').style.display = 'block';
+    document.getElementById('heroPreview').src = url;
+    document.getElementById('heroBox').classList.add('has-image');
+  }
+  function removeHero() {
+    document.getElementById('p-coverImage').value = '';
+    document.getElementById('heroPlaceholder').style.display = 'block';
+    document.getElementById('heroPreviewWrap').style.display = 'none';
+    document.getElementById('heroPreview').src = '';
+    document.getElementById('heroBox').classList.remove('has-image');
+  }
+
+  // ─── LOGO IMAGE ───
+  async function uploadLogoImg(e) {
+    const file = e.target.files[0]; if(!file) return;
+    showSaving('Uploading logo...');
+    try {
+      const url = await ghUploadImage(file);
+      document.getElementById('p-logoImage').value = url;
+      showLogoImgPreview(url);
+      hideSaving(); toast('Logo uploaded ✓');
+    } catch(err) { hideSaving(); toast('Upload failed','error'); }
+  }
+  function showLogoImgPreview(url) {
+    document.getElementById('logoImgPlaceholder').style.display = 'none';
+    document.getElementById('logoImgPreviewWrap').style.display = 'block';
+    document.getElementById('logoImgPreview').src = url;
+    document.getElementById('logoImgBox').classList.add('has-image');
+  }
+  function removeLogoImg() {
+    document.getElementById('p-logoImage').value = '';
+    document.getElementById('logoImgPlaceholder').style.display = 'block';
+    document.getElementById('logoImgPreviewWrap').style.display = 'none';
+    document.getElementById('logoImgPreview').src = '';
+    document.getElementById('logoImgBox').classList.remove('has-image');
+  }
+
+  // ─── SITE LOGO ───
+  async function uploadLogo(e) {
+    const file = e.target.files[0]; if(!file) return;
+    showSaving('Uploading logo...');
+    try {
+      const url = await ghUploadImage(file);
+      settings.logo = url;
+      showLogoPreview(url);
+      document.getElementById('sidebarMark').innerHTML = `<img src="${url}" alt="logo">`;
+      hideSaving(); toast('Logo uploaded ✓');
+    } catch(err) { hideSaving(); toast('Upload failed','error'); }
+  }
+  function showLogoPreview(url) {
+    document.getElementById('logoPlaceholder').style.display = 'none';
+    document.getElementById('logoPreviewWrap').style.display = 'block';
+    document.getElementById('logoPreview').src = url;
+    document.getElementById('logoBox').classList.add('has-image');
+  }
+  function removeLogo() {
+    settings.logo = '';
+    document.getElementById('logoPlaceholder').style.display = 'block';
+    document.getElementById('logoPreviewWrap').style.display = 'none';
+    document.getElementById('logoPreview').src = '';
+    document.getElementById('logoBox').classList.remove('has-image');
+    document.getElementById('sidebarMark').innerHTML = 'FS';
+  }
+
+  // ─── GALLERY ───
+  async function uploadGalleryImages(e) {
+    const files = Array.from(e.target.files); if(!files.length) return;
+    showSaving(`Uploading ${files.length} image(s)...`);
+    try {
+      for (const file of files) {
+        const url = await ghUploadImage(file);
+        galleryImages.push({ url, caption: '' });
+      }
+      renderGallery();
+      hideSaving(); toast(`${files.length} image(s) uploaded ✓`);
+    } catch(err) { hideSaving(); toast('Upload failed','error'); }
+  }
+
+  function renderGallery() {
+    const grid = document.getElementById('galleryGrid');
+    grid.innerHTML = galleryImages.map((img, i) => `
+      <div class="gallery-thumb">
+        <img src="${img.url}" alt="${img.caption||''}">
+        <div class="gallery-thumb-bar">
+          <input type="text" value="${img.caption||''}" placeholder="Caption (optional)" oninput="galleryImages[${i}].caption=this.value">
+          <button class="gallery-thumb-remove" onclick="removeGalleryImg(${i})">×</button>
+        </div>
+      </div>`).join('') + `
+      <div class="gallery-add-btn">
+        <input type="file" accept="image/*,image/gif" multiple onchange="uploadGalleryImages(event)">
+        +
+      </div>`;
+  }
+
+  function removeGalleryImg(i) { galleryImages.splice(i,1); renderGallery(); }
+
+  // ─── SECTIONS ───
+  function addSection(data = {}) {
+    const id = 'sec-' + Date.now();
+    const div = document.createElement('div');
+    div.className = 'sec-item'; div.id = id;
+    div.innerHTML = `
+      <div class="sec-head" onclick="toggleSec(this)">
+        <span style="color:var(--faint)">⠿</span>
+        <span class="sec-head-name">${data.title||'New Section'}</span>
+        <span style="font-size:0.7rem;color:var(--muted)">▾</span>
+        <button class="btn btn-danger btn-sm" style="margin-left:8px" onclick="event.stopPropagation();document.getElementById('${id}').remove()">×</button>
+      </div>
+      <div class="sec-body open">
+        <div class="form-group" style="margin-top:12px">
+          <label>Section Title</label>
+          <input type="text" class="sec-title" value="${data.title||''}" placeholder="e.g. About the Brand" oninput="this.closest('.sec-item').querySelector('.sec-head-name').textContent=this.value||'New Section'">
+        </div>
+        <div class="form-group">
+          <label>Content</label>
+          <textarea class="sec-body-text" rows="4" placeholder="Write the case study content here...">${data.body||''}</textarea>
+        </div>
+      </div>`;
+    document.getElementById('sectionsList').appendChild(div);
+  }
+
+  function toggleSec(head) {
+    const body = head.nextElementSibling;
+    body.classList.toggle('open');
+    head.querySelector('span:nth-child(3)').textContent = body.classList.contains('open') ? '▾' : '▸';
+  }
+
+  // ─── PALETTE ───
+  function addPaletteColor(data = {}) {
+    const hex = data.hex || '#ffffff';
+    const div = document.createElement('div');
+    div.className = 'palette-row-item';
+    div.innerHTML = `
+      <input type="color" value="${hex}" oninput="this.nextElementSibling.value=this.value">
+      <input type="text" class="pal-hex" value="${hex}" placeholder="#ffffff" style="width:110px" oninput="if(/^#[0-9a-fA-F]{6}$/.test(this.value))this.previousElementSibling.value=this.value">
+      <input type="text" class="pal-name" value="${data.name||''}" placeholder="Color name">
+      <input type="text" class="pal-role" value="${data.role||''}" placeholder="Primary / Accent / Neutral" style="width:180px">
+      <button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">×</button>`;
+    document.getElementById('paletteList').appendChild(div);
+  }
+
+  // ─── SAVE PROJECT ───
+  async function saveProject() {
+    const title = document.getElementById('p-title').value.trim();
+    if (!title) { toast('Title is required','error'); return; }
+    showSaving('Saving project...');
+
+    const slug = currentSlug || title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+
+    const sections = [];
+    document.querySelectorAll('#sectionsList .sec-item').forEach(item => {
+      sections.push({ title: item.querySelector('.sec-title').value, body: item.querySelector('.sec-body-text').value });
+    });
+
+    const palette = [];
+    document.querySelectorAll('#paletteList .palette-row-item').forEach(item => {
+      palette.push({ hex: item.querySelector('.pal-hex').value, name: item.querySelector('.pal-name').value, role: item.querySelector('.pal-role').value });
+    });
+
+    const data = {
+      title,
+      client: document.getElementById('p-client').value,
+      industry: document.getElementById('p-industry').value,
+      services: document.getElementById('p-services').value,
+      year: document.getElementById('p-year').value,
+      tagline: document.getElementById('p-tagline').value,
+      shortDesc: document.getElementById('p-shortDesc').value,
+      heroBg: document.getElementById('p-heroBg').value || '#0a0a0a',
+      accentColor: document.getElementById('p-accent').value || '#e8c97e',
+      textColor: document.getElementById('p-textColor').value || '#ffffff',
+      coverImage: document.getElementById('p-coverImage').value || '',
+      logoImage: document.getElementById('p-logoImage').value || '',
+      images: galleryImages,
+      sections,
+      palette,
+      order: parseInt(document.getElementById('p-order').value) || 1,
+      published: document.getElementById('p-published').checked
+    };
+
+    const existing = projects[slug];
+    const sha = existing ? existing.sha : null;
+
+    try {
+      const result = await ghPut(`content/projects/${slug}.json`, JSON.stringify(data, null, 2), sha, `${currentSlug ? 'Update' : 'Add'} project: ${title}`);
+      projects[slug] = { data, sha: result.content?.sha || 'updated' };
+      currentSlug = slug;
+      hideSaving();
+      toast('Project saved ✓');
+      document.getElementById('deleteProjBtn').style.display = 'inline-flex';
+      document.getElementById('editorTitle').textContent = 'Edit Project';
+      updateDash();
+    } catch(e) {
+      hideSaving(); toast('Save failed. Check token permissions.','error');
+    }
+  }
+
+  // ─── DELETE PROJECT ───
+  async function deleteProject() {
+    if (!currentSlug) return;
+    if (!confirm(`Delete "${projects[currentSlug]?.data?.title}"? This cannot be undone.`)) return;
+    showSaving('Deleting...');
+    try {
+      const f = await ghGet(`content/projects/${currentSlug}.json`);
+      if (f) await ghDelete(`content/projects/${currentSlug}.json`, f.sha);
+      delete projects[currentSlug];
+      currentSlug = null;
+      hideSaving(); toast('Project deleted');
+      nav('projects'); renderProjList(); updateDash();
+    } catch(e) { hideSaving(); toast('Delete failed','error'); }
+  }
+
+  // ─── SAVE SETTINGS ───
+  async function saveSettings() {
+    showSaving('Saving settings...');
+    const data = {
+      studioName: document.getElementById('s-studioName').value,
+      tagline: document.getElementById('s-tagline').value,
+      designerName: document.getElementById('s-designerName').value,
+      email: document.getElementById('s-email').value,
+      phone: document.getElementById('s-phone').value,
+      instagram: document.getElementById('s-instagram').value,
+      yearsExp: document.getElementById('s-yearsExp').value,
+      projectCount: document.getElementById('s-projectCount').value,
+      logo: settings.logo || '',
+      about: {
+        heading: document.getElementById('s-aboutHeading').value,
+        p1: document.getElementById('s-p1').value,
+        p2: document.getElementById('s-p2').value,
+        p3: document.getElementById('s-p3').value
+      }
+    };
+    const existing = await ghGet('content/settings.json');
+    const sha = existing ? existing.sha : null;
+    try {
+      await ghPut('content/settings.json', JSON.stringify(data, null, 2), sha, 'Update site settings');
+      settings = data;
+      applySettings();
+      hideSaving(); toast('Settings saved ✓');
+    } catch(e) { hideSaving(); toast('Save failed','error'); }
+  }
+
+  // ─── UI HELPERS ───
+  function showSaving(text = 'Saving...') { document.getElementById('savingLabel').textContent = text; document.getElementById('savingOverlay').classList.add('show'); }
+  function hideSaving() { document.getElementById('savingOverlay').classList.remove('show'); }
+
+  function toast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    document.getElementById('toastIcon').textContent = type === 'success' ? '✓' : '✕';
+    t.className = `toast ${type} show`;
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  init();
+</script>
+</body>
+</html>

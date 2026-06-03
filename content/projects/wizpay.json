@@ -1,40 +1,59 @@
 {
   "title": "WIZPAY",
   "client": "Wizpay",
-  "industry": "Fintech · Microfinance",
-  "services": "Logo · Mission · Color System · Brand Applications",
+  "industry": "Fintech Â· Microfinance",
+  "services": "Logo Â· Mission Â· Color System Â· Brand Applications",
   "year": "2025",
   "tagline": "Smart Finance, Simple Living!",
-  "shortDesc": "A full brand identity system for a next-generation microfinance company — building a future where smart, inclusive banking is accessible to everyone.",
+  "shortDesc": "A full brand identity system for a next-generation microfinance company â building a future where smart, inclusive banking is accessible to everyone.",
   "heroBg": "#071a3e",
   "accentColor": "#00c3ff",
   "textColor": "#ffffff",
-  "coverImage": "",
+  "coverImage": "/images/uploads/1780444648487-KONAR_LOGO.JPG",
   "logoImage": "",
   "sections": [
     {
       "title": "Brand Overview",
-      "body": "At Wizpay, the mission is to bridge the gap between financial institutions and everyday people by providing smart, inclusive, and technology-driven microfinance services. Wizpay stands as a catalyst for economic transformation.\n\nThe vision is to become the leading force in microfinance across Africa and beyond — a brand known not just for banking, but for transforming lives."
+      "body": "At Wizpay, the mission is to bridge the gap between financial institutions and everyday people by providing smart, inclusive, and technology-driven microfinance services. Wizpay stands as a catalyst for economic transformation.\n\nThe vision is to become the leading force in microfinance across Africa and beyond â a brand known not just for banking, but for transforming lives.",
+      "image": "/images/uploads/1780444728161-KONAR_LOGO_page-0006.jpg"
     },
     {
       "title": "Logo Rationale",
-      "body": "The Wizpay mark combines a bold W letterform with a human figure — arms raised in empowerment, a dot above as a head — set within a rounded square app icon. The icon communicates approachability and financial freedom simultaneously.\n\nThe cyan-on-blue color application creates clear differentiation — cyan signals technology, speed, and trust in the digital space, while the deep navy grounds the brand with authority and stability."
+      "body": "The Wizpay mark combines a bold W letterform with a human figure â arms raised in empowerment, a dot above as a head â set within a rounded square app icon. The icon communicates approachability and financial freedom simultaneously.\n\nThe cyan-on-blue color application creates clear differentiation â cyan signals technology, speed, and trust in the digital space, while the deep navy grounds the brand with authority and stability.",
+      "image": "/images/uploads/1780444809366-KONAR_LOGO_page-0006.jpg"
     },
     {
       "title": "Core Values",
-      "body": "Accessibility. Security. Transparency. Innovation. These five values anchor everything Wizpay does — from product decisions to visual choices, each one reflects the kind of financial partner Wizpay aims to be."
+      "body": "Accessibility. Security. Transparency. Innovation. These five values anchor everything Wizpay does â from product decisions to visual choices, each one reflects the kind of financial partner Wizpay aims to be.",
+      "image": ""
     },
     {
       "title": "Color Palette",
-      "body": "The Wizpay palette is built on trust — deep navy as the foundation of stability, electric cyan as the energy of innovation, and clean white for clarity. Every color combination is designed to work on both digital screens and print."
+      "body": "The Wizpay palette is built on trust â deep navy as the foundation of stability, electric cyan as the energy of innovation, and clean white for clarity. Every color combination is designed to work on both digital screens and print.",
+      "image": "/images/uploads/1780444870115-KONAR_LOGO_page-0007.jpg"
     }
   ],
-  "images": [],
   "palette": [
-    { "name": "Deep Navy", "hex": "#071A3E", "role": "Primary" },
-    { "name": "Wizpay Blue", "hex": "#065DCE", "role": "Primary" },
-    { "name": "Electric Cyan", "hex": "#00C3FF", "role": "Accent" },
-    { "name": "White", "hex": "#FFFFFF", "role": "Neutral" }
+    {
+      "hex": "#071A3E",
+      "name": "Deep Navy",
+      "role": "Primary"
+    },
+    {
+      "hex": "#065DCE",
+      "name": "Wizpay Blue",
+      "role": "Primary"
+    },
+    {
+      "hex": "#00C3FF",
+      "name": "Electric Cyan",
+      "role": "Accent"
+    },
+    {
+      "hex": "#FFFFFF",
+      "name": "White",
+      "role": "Neutral"
+    }
   ],
   "order": 3,
   "published": true

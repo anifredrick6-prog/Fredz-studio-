@@ -9,28 +9,25 @@
   "heroBg": "#071a3e",
   "accentColor": "#00c3ff",
   "textColor": "#ffffff",
-  "coverImage": "/images/uploads/1780444648487-KONAR_LOGO.JPG",
+  "coverImage": "",
   "logoImage": "",
+  "images": [],
   "sections": [
     {
       "title": "Brand Overview",
-      "body": "At Wizpay, the mission is to bridge the gap between financial institutions and everyday people by providing smart, inclusive, and technology-driven microfinance services. Wizpay stands as a catalyst for economic transformation.\n\nThe vision is to become the leading force in microfinance across Africa and beyond Ã¢ÂÂ a brand known not just for banking, but for transforming lives.",
-      "image": "/images/uploads/1780444728161-KONAR_LOGO_page-0006.jpg"
+      "body": "At Wizpay, the mission is to bridge the gap between financial institutions and everyday people by providing smart, inclusive, and technology-driven microfinance services. Wizpay stands as a catalyst for economic transformation.\n\nThe vision is to become the leading force in microfinance across Africa and beyond Ã¢ÂÂ a brand known not just for banking, but for transforming lives."
     },
     {
       "title": "Logo Rationale",
-      "body": "The Wizpay mark combines a bold W letterform with a human figure Ã¢ÂÂ arms raised in empowerment, a dot above as a head Ã¢ÂÂ set within a rounded square app icon. The icon communicates approachability and financial freedom simultaneously.\n\nThe cyan-on-blue color application creates clear differentiation Ã¢ÂÂ cyan signals technology, speed, and trust in the digital space, while the deep navy grounds the brand with authority and stability.",
-      "image": "/images/uploads/1780444809366-KONAR_LOGO_page-0006.jpg"
+      "body": "The Wizpay mark combines a bold W letterform with a human figure Ã¢ÂÂ arms raised in empowerment, a dot above as a head Ã¢ÂÂ set within a rounded square app icon. The icon communicates approachability and financial freedom simultaneously.\n\nThe cyan-on-blue color application creates clear differentiation Ã¢ÂÂ cyan signals technology, speed, and trust in the digital space, while the deep navy grounds the brand with authority and stability."
     },
     {
       "title": "Core Values",
-      "body": "Accessibility. Security. Transparency. Innovation. These five values anchor everything Wizpay does Ã¢ÂÂ from product decisions to visual choices, each one reflects the kind of financial partner Wizpay aims to be.",
-      "image": ""
+      "body": "Accessibility. Security. Transparency. Innovation. These five values anchor everything Wizpay does Ã¢ÂÂ from product decisions to visual choices, each one reflects the kind of financial partner Wizpay aims to be."
     },
     {
       "title": "Color Palette",
-      "body": "The Wizpay palette is built on trust Ã¢ÂÂ deep navy as the foundation of stability, electric cyan as the energy of innovation, and clean white for clarity. Every color combination is designed to work on both digital screens and print.",
-      "image": "/images/uploads/1780444870115-KONAR_LOGO_page-0007.jpg"
+      "body": "The Wizpay palette is built on trust Ã¢ÂÂ deep navy as the foundation of stability, electric cyan as the energy of innovation, and clean white for clarity. Every color combination is designed to work on both digital screens and print."
     }
   ],
   "palette": [

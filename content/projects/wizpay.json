@@ -1,8 +1,8 @@
 {
   "title": "WIZPAY",
   "client": "Wizpay",
-  "industry": "Fintech ÃÂ· Microfinance",
-  "services": "Logo ÃÂ· Mission ÃÂ· Color System ÃÂ· Brand Applications",
+  "industry": "Fintech · Microfinance",
+  "services": "Logo · Mission · Color System · Brand Applications",
   "year": "2025",
   "tagline": "Smart Finance, Simple Living!",
   "shortDesc": "A full brand identity system for a next-generation microfinance company building a future where smart, inclusive banking is accessible to everyone.",
@@ -11,7 +11,12 @@
   "textColor": "#ffffff",
   "coverImage": "",
   "logoImage": "",
-  "images": [],
+  "images": [
+    {
+      "url": "/images/uploads/1780557174119-KONAR_LOGO123.jpg",
+      "caption": ""
+    }
+  ],
   "sections": [
     {
       "title": "Brand Overview",

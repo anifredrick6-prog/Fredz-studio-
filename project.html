@@ -41,15 +41,15 @@
     }
 
     .hero-cover {
-      position: absolute; inset: 0;
-      background-size: cover; background-position: center;
-      transition: transform 8s ease;
+  position: absolute; inset: 0;
+  background-size: contain; background-position: center; background-repeat: no-repeat;
     }
+  
     .proj-hero:hover .hero-cover { transform: scale(1.04); }
 
     .hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 100%);
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.75) 60%, rgba(0,0,0,0.4) 100%);
     }
 
     .hero-grid {
@@ -242,10 +242,7 @@
               ? `<div class="hero-cover" style="background-image:url('${p.coverImage}')"></div><div class="hero-overlay"></div>`
               : `<div class="hero-grid"></div>`
             }
-            ${p.logoImage
-              ? `<div class="hero-logo-mark"><img src="${p.logoImage}" alt="${p.title} logo"></div>`
-              : ''
-            }
+            
             <div class="proj-eyebrow" style="position:relative">
               <div class="eyebrow-line" style="background:${accent}"></div>
               <span style="color:${accent}">Brand Identity — 0${slugIdx + 1}</span>

@@ -283,18 +283,18 @@
         if(p.images && p.images.length > 0) {
           html += `<div class="content-section reveal"><h2>Project Images</h2>`;
           if(p.images.length === 1) {
-            html += `<div class="single-image"><img src="${p.images[0].image}" alt="${p.images[0].caption || p.title}"></div>`;
+            html += `<div class="single-image"><img src="${p.images[0].url || p.images[0].image}" alt="${p.images[0].caption || p.title}"></div>`;
           } else {
             html += `<div class="image-gallery">`;
             p.images.forEach((img, i) => {
               html += `
                 <div class="gallery-item">
-                  <img src="${img.image}" alt="${img.caption || p.title + ' mockup ' + (i+1)}">
+                  <img src="${img.url || img.image}" alt="${img.caption || p.title + ' mockup ' + (i+1)}">
                   ${img.caption ? `<div class="gallery-caption">${img.caption}</div>` : ''}
                 </div>`;
             });
             html += `</div>`;
-          }
+    }
           html += `</div><div class="divider"></div>`;
         }
 

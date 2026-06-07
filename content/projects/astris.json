@@ -9,8 +9,9 @@
   "heroBg": "#0d0a18",
   "accentColor": "#c1bcf0",
   "textColor": "#f8f7ff",
-  "coverImage": "",
+  "coverImage": "/images/uploads/1780857374784-ASTRIS_COVER_2.jpg",
   "logoImage": "",
+  "images": [],
   "sections": [
     {
       "title": "About the Brand",
@@ -29,14 +30,37 @@
       "body": "Morfa is the primary font — chosen for its sleek, modern monospace character. Used for headings and the brand wordmark. Space Grotesk serves as the secondary typeface for body texts and numeral representations."
     }
   ],
-  "images": [],
   "palette": [
-    { "name": "Haiti", "hex": "#18102B", "role": "Primary" },
-    { "name": "Electric Violet", "hex": "#C1BCF0", "role": "Primary" },
-    { "name": "Blue Chalk", "hex": "#F8F7FF", "role": "Primary" },
-    { "name": "Yellow", "hex": "#F0E100", "role": "Secondary" },
-    { "name": "Violet", "hex": "#834DFC", "role": "Secondary" },
-    { "name": "Cyan Blue", "hex": "#0099FF", "role": "Secondary" }
+    {
+      "hex": "#18102B",
+      "name": "Haiti",
+      "role": "Primary"
+    },
+    {
+      "hex": "#C1BCF0",
+      "name": "Electric Violet",
+      "role": "Primary"
+    },
+    {
+      "hex": "#F8F7FF",
+      "name": "Blue Chalk",
+      "role": "Primary"
+    },
+    {
+      "hex": "#F0E100",
+      "name": "Yellow",
+      "role": "Secondary"
+    },
+    {
+      "hex": "#834DFC",
+      "name": "Violet",
+      "role": "Secondary"
+    },
+    {
+      "hex": "#0099FF",
+      "name": "Cyan Blue",
+      "role": "Secondary"
+    }
   ],
   "order": 1,
   "published": true

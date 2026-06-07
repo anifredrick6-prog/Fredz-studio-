@@ -9,14 +9,9 @@
   "heroBg": "#071a3e",
   "accentColor": "#00c3ff",
   "textColor": "#ffffff",
-  "coverImage": "/images/uploads/1780851440472-8e9b8570-826e-4868-9fbb-fe2f710a4645_0_watermark.jpeg",
+  "coverImage": "/images/uploads/1780856193861-KORNA_INSTA.JPG",
   "logoImage": "",
-  "images": [
-    {
-      "url": "/images/uploads/1780851478775-8e9b8570-826e-4868-9fbb-fe2f710a4645_2_watermark.jpeg",
-      "caption": ""
-    }
-  ],
+  "images": [],
   "sections": [
     {
       "title": "Brand Overview",
@@ -24,15 +19,15 @@
     },
     {
       "title": "Logo Rationale",
-      "body": "The Wizpay mark combines a bold W letterform with a human figure Ã¢ÂÂ arms raised in empowerment, a dot above as a head Ã¢ÂÂ set within a rounded square app icon. The icon communicates approachability and financial freedom simultaneously.\n\nThe cyan-on-blue color application creates clear differentiation Ã¢ÂÂ cyan signals technology, speed, and trust in the digital space, while the deep navy grounds the brand with authority and stability."
+      "body": "The Wizpay mark combines a bold W letterform with a human figure arms raised in empowerment, a dot above as a head set within a rounded square app icon. The icon communicates approachability and financial freedom simultaneously.\n\nThe cyan-on-blue color application creates clear differentiation cyan signals technology, speed, and trust in the digital space, while the deep navy grounds the brand with authority and stability."
     },
     {
       "title": "Core Values",
-      "body": "Accessibility. Security. Transparency. Innovation. These five values anchor everything Wizpay does Ã¢ÂÂ from product decisions to visual choices, each one reflects the kind of financial partner Wizpay aims to be."
+      "body": "Accessibility. Security. Transparency. Innovation. These five values anchor everything Wizpay does from product decisions to visual choices, each one reflects the kind of financial partner Wizpay aims to be."
     },
     {
       "title": "Color Palette",
-      "body": "The Wizpay palette is built on trust Ã¢ÂÂ deep navy as the foundation of stability, electric cyan as the energy of innovation, and clean white for clarity. Every color combination is designed to work on both digital screens and print."
+      "body": "The Wizpay palette is built on trust deep navy as the foundation of stability, electric cyan as the energy of innovation, and clean white for clarity. Every color combination is designed to work on both digital screens and print."
     }
   ],
   "palette": [

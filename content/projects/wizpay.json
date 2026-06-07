@@ -11,7 +11,20 @@
   "textColor": "#ffffff",
   "coverImage": "/images/uploads/1780856193861-KORNA_INSTA.JPG",
   "logoImage": "",
-  "images": [],
+  "images": [
+    {
+      "url": "/images/uploads/1780856488185-KONAR_LOGO_4.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780856499883-KONAR_LOGO.JPG",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1780856513211-KONAR_LOGO123.jpg",
+      "caption": ""
+    }
+  ],
   "sections": [
     {
       "title": "Brand Overview",

@@ -11,7 +11,12 @@
   "textColor": "#f8f7ff",
   "coverImage": "/images/uploads/1780857374784-ASTRIS_COVER_2.jpg",
   "logoImage": "",
-  "images": [],
+  "images": [
+    {
+      "url": "/images/uploads/1780857630335-ASTRIS_PG_6.jpg",
+      "caption": ""
+    }
+  ],
   "sections": [
     {
       "title": "About the Brand",

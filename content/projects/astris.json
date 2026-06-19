@@ -9,8 +9,8 @@
   "heroBg": "#0d0a18",
   "accentColor": "#c1bcf0",
   "textColor": "#f8f7ff",
-  "coverImage": "",
-  "logoImage": "/images/uploads/1780858794648-20260607_195813.png",
+  "coverImage": "/images/uploads/1781848245673-ASTRIS.jpg",
+  "logoImage": "",
   "images": [
     {
       "url": "/images/uploads/1781125815183-ASTRIS_COVER_2.jpg",
@@ -38,6 +38,10 @@
     },
     {
       "url": "/images/uploads/1781126226070-ASTRIS_PG_7.jpg",
+      "caption": ""
+    },
+    {
+      "url": "/images/uploads/1781847917044-20260616_051933.jpg",
       "caption": ""
     }
   ],
